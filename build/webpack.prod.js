@@ -1,5 +1,6 @@
 const merge = require('webpack-merge');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -42,6 +43,11 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       filename: `${DIST_DIR}/index.html`,
       template: `${PUBLIC_DIR}/index.html`,
+    }),
+    new CompressionPlugin({
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$|\.css$/,
     }),
   ],
 });
