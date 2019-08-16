@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   userId: { type: String, required: true, unique: true },
   name: String,
   email: String,
+  profilePicture: String,
   accessToken: String,
   git: Object,
 });
@@ -17,6 +18,7 @@ const prepareGithubUserData = user => {
     name: user.name,
     email: user.email,
     userId: user.login,
+    profilePicture: user.avatar_url,
     git: user,
   };
 };
@@ -39,6 +41,11 @@ const saveOrUpdate = async (type, data, accessToken) => {
   return savedUser;
 };
 
+const getUser = id => {
+  return User.findById(id);
+};
+
 module.exports = {
+  getUser,
   userSaveOrUpdate: saveOrUpdate,
 };

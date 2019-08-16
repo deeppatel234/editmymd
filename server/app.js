@@ -34,12 +34,12 @@ if (env && env.trim() === 'development') {
 }
 
 // Import Routes
-// const api = require('./api');
+const api = require('./api');
 const publicAssets = require('./public');
 const oauth = require('./oauth');
 
 // Register Routes
-// app.use('/api', api);
+app.use('/api', api);
 app.get('/oauth_redirect', oauth);
 app.use(publicAssets);
 

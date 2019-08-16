@@ -18,7 +18,7 @@ router.use(async (req, res) => {
       accessToken,
     );
 
-    res.redirect(`/login-success/?token=${_id}`);
+    res.redirect(`/oauth/${_id}`);
   } catch (err) {
     res.status(500).send('Something went wrong');
   }
