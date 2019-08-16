@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import LoginPage from './pages/LoginPage';
-import OAuth from './pages/OAuth';
-import Homepage from './pages/HomePage';
+import LoginPage from 'Pages/LoginPage';
+import App from 'Pages/App';
+import OAuth from 'Pages/OAuth';
+import Homepage from 'Pages/HomePage';
 
 import theme from './style/theme';
 import GlobalStyle from './style/globalStyle';
@@ -19,6 +20,7 @@ const RenderApp = () => (
           <Switch>
             <Route path="/login" component={LoginPage} />
             <Route path="/oauth/:token" component={OAuth} />
+            <Route path="/app" component={App} />
             <Route path="/" component={Homepage} />
             <Redirect to="/" />
           </Switch>
