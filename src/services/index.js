@@ -2,27 +2,35 @@ import axios from 'axios';
 
 class Request {
   constructor() {
-    /**
-     * base request for api data
-     */
-    this.apiRequest = axios.create({
-      method: 'post',
-      baseURL: '/api/',
-    });
-    /**
-     * get request for external call
-     */
-    this.getRequest = axios.create({
-      method: 'get',
-    });
-    /**
-     * post request for external call
-     */
-    this.postRequest = axios.create({
-      method: 'post',
-    });
+    // /**
+    //  * base request for api data
+    //  */
+    // this.apiRequest = axios.create({
+    //   method: 'post',
+    //   baseURL: '/api/',
+    // });
 
-    this.token = false;
+    // /**
+    //  * base request for api data
+    //  */
+    // this.apiRequestGet = axios.create({
+    //   method: 'get',
+    //   baseURL: '/api/',
+    // });
+    // /**
+    //  * get request for external call
+    //  */
+    // this.getRequest = axios.create({
+    //   method: 'get',
+    // });
+    // /**
+    //  * post request for external call
+    //  */
+    // this.postRequest = axios.create({
+    //   method: 'post',
+    // });
+
+    this.token = this.getToken();
   }
 
   /**
@@ -34,8 +42,9 @@ class Request {
    */
   api({ url, data = {} }) {
     return new Promise((resolve, rejects) => {
-      this.apiRequest({
-        url,
+      axios({
+        method: 'post',
+        url: `/api${url}`,
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -50,9 +59,25 @@ class Request {
     });
   }
 
-  get(payload) {
+  /**
+   * Request data from API server
+   *
+   * @param {Object} payload
+   * @param {String} payload.url
+   * @param {Object} payload.data
+   */
+  apiGet({ url, params = {} }) {
     return new Promise((resolve, rejects) => {
-      this.getRequest(payload)
+      axios({
+        method: 'get',
+        url: `/api${url}`,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          authorization: this.token,
+        },
+        params,
+      })
         .then(res => {
           resolve(res.data);
         })
@@ -60,15 +85,25 @@ class Request {
     });
   }
 
-  post(payload) {
-    return new Promise((resolve, rejects) => {
-      this.postRequest(payload)
-        .then(res => {
-          resolve(res.data);
-        })
-        .catch(rejects);
-    });
-  }
+  // get(payload) {
+  //   return new Promise((resolve, rejects) => {
+  //     this.getRequest(payload)
+  //       .then(res => {
+  //         resolve(res.data);
+  //       })
+  //       .catch(rejects);
+  //   });
+  // }
+
+  // post(payload) {
+  //   return new Promise((resolve, rejects) => {
+  //     this.postRequest(payload)
+  //       .then(res => {
+  //         resolve(res.data);
+  //       })
+  //       .catch(rejects);
+  //   });
+  // }
 
   setToken(token) {
     this.token = token;

@@ -17,7 +17,7 @@ const Auth = ({ children }) => {
     if (token) {
       service.setToken(token);
       service
-        .api({
+        .apiGet({
           url: '/user',
         })
         .then(res => {

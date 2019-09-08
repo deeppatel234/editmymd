@@ -5,6 +5,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import LoginPage from 'Pages/LoginPage';
 import App from 'Pages/App';
+import ReadMD from 'Pages/ReadMD';
 import OAuth from 'Pages/OAuth';
 import Homepage from 'Pages/HomePage';
 
@@ -21,6 +22,7 @@ const RenderApp = () => (
             <Route path="/login" component={LoginPage} />
             <Route path="/oauth/:token" component={OAuth} />
             <Route path="/app" component={App} />
+            <Route path="/readmd/:repo" component={ReadMD} />
             <Route path="/" component={Homepage} />
             <Redirect to="/" />
           </Switch>
