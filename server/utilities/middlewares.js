@@ -3,7 +3,26 @@ const _difference = require('lodash/difference');
 
 const { removeUndefinedNull } = require('./utils');
 
-const { verifyAccessToken } = require('../oauth/token');
+const { getUser } = require('../model/user');
+
+const verifyAccessToken = async token => {
+  try {
+    const user = await getUser(token);
+    if (user) {
+      return {
+        user,
+        isValid: true,
+      };
+    }
+    return {
+      isValid: false,
+    };
+  } catch (err) {
+    return {
+      isValid: false,
+    };
+  }
+};
 
 const getTokenFromRequest = req => {
   // get token from authorization header
@@ -46,7 +65,7 @@ const hasData = data => {
       next();
     } else {
       res.status(500).json({
-        message: `missing params : ${_difference(data, Object.keys(body))}`
+        message: `missing params : ${_difference(data, Object.keys(body))}`,
       });
     }
   };

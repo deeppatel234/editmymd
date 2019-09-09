@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import service from 'Services';
 
-const URL = `https://github.com/login/oauth/authorize?client_id=c89dd5f13749cb45b154&scope=user%20repo`;
+const URL = `https://github.com/login/oauth/authorize?client_id=c89dd5f13749cb45b154&scope=user%20repo&state=github`;
 
 const LoginPage = () => {
   if (service.getToken()) {
