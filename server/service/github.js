@@ -79,13 +79,10 @@ const getRepositories = async accessToken => {
   }
 };
 
-const searchRepositories = async (accessToken, { query }) => {
+const searchRepositories = async (accessToken, { query, username }) => {
   try {
     const { data } = await apiRequest(accessToken, {
-      url: URL.SEARCH_REPOSITORY,
-      params: {
-        q: query,
-      },
+      url: `${URL.SEARCH_REPOSITORY}?q=${query}+user:${username}`,
     });
     return data;
   } catch (err) {

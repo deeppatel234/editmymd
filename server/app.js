@@ -17,21 +17,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Webpack Development Server
-const env = process.env.NODE_ENV;
-if (env && env.trim() === 'development') {
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const config = require('../build/webpack.dev');
+// const env = process.env.NODE_ENV;
+// if (env && env.trim() === 'development') {
+//   const webpack = require('webpack');
+//   const webpackDevMiddleware = require('webpack-dev-middleware');
+//   const config = require('../build/webpack.dev');
 
-  const compiler = webpack(config);
+//   const compiler = webpack(config);
 
-  app.use(
-    webpackDevMiddleware(compiler, {
-      publicPath: config.output.publicPath,
-      stats: { colors: true },
-    }),
-  );
-}
+//   app.use(
+//     webpackDevMiddleware(compiler, {
+//       publicPath: config.output.publicPath,
+//       stats: { colors: true },
+//     }),
+//   );
+// }
 
 // Import Routes
 const api = require('./api');

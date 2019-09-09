@@ -20,4 +20,21 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/search', async (req, res) => {
+  const { accessToken, type, userId } = req.user;
+  const { query } = req.query;
+
+  try {
+    const repos = await getService(type, 'searchRepositories')(accessToken, {
+      query,
+      username: userId,
+    });
+    res.json(repos);
+  } catch (err) {
+    res.status(500).json({
+      message: 'Something went wrong',
+    });
+  }
+});
+
 module.exports = router;
