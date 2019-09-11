@@ -1,4 +1,5 @@
 const express = require('express');
+const { errors } = require('celebrate');
 
 const router = express.Router();
 
@@ -11,5 +12,6 @@ router.use('/user', user);
 router.use('/repo', repo);
 router.use('/branch', branch);
 router.use('/oauth_redirect', oauth);
+router.use(errors());
 
 module.exports = router;

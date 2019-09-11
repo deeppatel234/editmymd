@@ -1,4 +1,5 @@
 const express = require('express');
+const { celebrate, Joi } = require('celebrate');
 
 const { auth } = require('../../utilities/middlewares');
 const { getService } = require('../../service');
@@ -11,8 +12,7 @@ router.get('/', async (req, res) => {
   const { accessToken, type } = req.user;
 
   try {
-    const repos = await getService(type, 'getRepositories')(accessToken);
-    res.json(repos);
+    res.json(await getService(type, 'getRepositories')(accessToken));
   } catch (err) {
     res.status(500).json({
       message: 'Something went wrong',
@@ -20,21 +20,30 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/search', async (req, res) => {
-  const { accessToken, type, userId } = req.user;
-  const { query } = req.query;
+router.get(
+  '/search',
+  celebrate({
+    query: {
+      query: Joi.string().required(),
+    },
+  }),
+  async (req, res) => {
+    const { accessToken, type, userId } = req.user;
+    const { query } = req.query;
 
-  try {
-    const repos = await getService(type, 'searchRepositories')(accessToken, {
-      query,
-      username: userId,
-    });
-    res.json(repos);
-  } catch (err) {
-    res.status(500).json({
-      message: 'Something went wrong',
-    });
-  }
-});
+    try {
+      res.json(
+        await getService(type, 'searchRepositories')(accessToken, {
+          query,
+          username: userId,
+        }),
+      );
+    } catch (err) {
+      res.status(500).json({
+        message: 'Something went wrong',
+      });
+    }
+  },
+);
 
 module.exports = router;
