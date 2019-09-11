@@ -1,17 +1,13 @@
 const http = require('http');
 const mongoose = require('mongoose');
-const { ENV_PATH } = require('./path');
 
-// set Environment variables
-require('dotenv').config({ path: ENV_PATH });
-const { app, port } = require('./app');
-
-const mongoDbURI = process.env.DBURI;
+const config = require('./config');
+const app = require('./app');
 
 const server = http.Server(app);
 
-mongoose.connect(mongoDbURI, { useNewUrlParser: true }).then(() => {
-  server.listen(port, () => {
-    console.log(`Server Started at port ${port}`);
+mongoose.connect(config.databaseURL, { useNewUrlParser: true }).then(() => {
+  server.listen(config.port, () => {
+    console.log(`Server Started at port ${config.port}`);
   });
 });

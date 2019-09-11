@@ -1,11 +1,11 @@
 const express = require('express');
 const _pick = require('lodash/pick');
 
-const { auth } = require('../../utilities/middlewares');
+const { isAuth } = require('../middlewares');
 
 const router = express.Router();
 
-router.use(auth);
+router.use(isAuth);
 
 router.get('/', async (req, res) => {
   res.json(

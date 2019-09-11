@@ -1,12 +1,12 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 
-const { auth } = require('../../utilities/middlewares');
+const { isAuth } = require('../middlewares');
 const { getService } = require('../../service');
 
 const router = express.Router();
 
-router.use(auth);
+router.use(isAuth);
 
 router.get('/', async (req, res) => {
   const { accessToken, type } = req.user;

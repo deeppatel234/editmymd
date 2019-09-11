@@ -2,13 +2,13 @@
 const express = require('express');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
+const config = require('./config');
 
 // Init Express App
 const app = express();
 
 // Set Server Port
-const port = process.env.PORT || 3030;
-app.set('port', port);
+app.set('port', config.port);
 
 // Init Express Middlewares
 app.use(logger('dev'));
@@ -41,4 +41,4 @@ const publicAssets = require('./public');
 app.use('/api', api);
 app.use(publicAssets);
 
-module.exports = { app, port };
+module.exports = app;
