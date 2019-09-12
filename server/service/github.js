@@ -1,4 +1,5 @@
 const axios = require('axios');
+const config = require('../config');
 
 const GITHUB_API = 'https://api.github.com';
 
@@ -31,8 +32,8 @@ const getAccessToken = async code => {
       },
       data: {
         code,
-        client_id: process.env.GITHUB_CLIENT_KEY,
-        client_secret: process.env.GITHUB_SECRET_KEY,
+        client_id: config.github.clientId,
+        client_secret: config.github.clientSecret,
       },
     });
     const { access_token: accessToken } = data;

@@ -30,4 +30,12 @@ module.exports = {
   api: {
     prefix: '/api',
   },
+
+  /**
+   * GitHub OAuth
+   */
+  github: {
+    clientId: process.env.GITHUB_CLIENT_KEY,
+    clientSecret: process.env.GITHUB_SECRET_KEY,
+  },
 };
