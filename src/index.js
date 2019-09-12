@@ -9,11 +9,10 @@ import ReadMD from 'Pages/ReadMD';
 import OAuth from 'Pages/OAuth';
 import Homepage from 'Pages/HomePage';
 
-import theme from './style/theme';
-import GlobalStyle from './style/globalStyle';
+import { themeConfig, GlobalStyle } from './theme';
 
 const RenderApp = () => (
-  <ThemeProvider theme={theme}>
+  <ThemeProvider theme={themeConfig}>
     <>
       <GlobalStyle />
       <BrowserRouter>
