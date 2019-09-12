@@ -53,13 +53,13 @@ export default {
     fontFamily: FontFamily,
   },
   body: {
-    fontSize: pxToRem(16),
+    fontSize: pxToRem(14),
     lineHeight: 1.5,
     fontWeight: FontWeight.REGULAR,
     fontFamily: FontFamily,
   },
   subBody: {
-    fontSize: pxToRem(14),
+    fontSize: pxToRem(12),
     lineHeight: 1.43,
     fontWeight: FontWeight.REGULAR,
   },
