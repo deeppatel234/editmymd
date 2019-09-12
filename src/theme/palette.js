@@ -36,7 +36,6 @@ const colors = {
   [COLOR.TEXT]: 'rgba(0, 0, 0, 0.87)',
   [COLOR.SUBTEXT]: 'rgba(0, 0, 0, 0.54)',
   [COLOR.DISABLED]: 'rgba(0, 0, 0, 0.38)',
-  [COLOR.DEFAULT]: grey.grey300,
   [COLOR.WHITE]: '#fff',
   [COLOR.BLACK]: '#000',
 };

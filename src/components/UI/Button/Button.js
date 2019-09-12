@@ -16,15 +16,13 @@ const Button = ({ children, loading, ...restProps }) => (
 );
 
 Button.defaultProps = {
-  variant: 'body',
-  color: 'primary',
+  color: '',
   outline: false,
   block: false,
   loading: false,
 };
 
 Button.propTypes = {
-  variant: PropTypes.string,
   color: PropTypes.string,
   outline: PropTypes.bool,
   block: PropTypes.bool,

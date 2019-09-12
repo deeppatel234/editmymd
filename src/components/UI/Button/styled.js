@@ -5,8 +5,16 @@ export const ButtonElement = styled.button`
   padding: 6px 16px;
   ${props => props.theme.typography.button}
   color: ${props =>
-    props.theme.palette.getContrastText(props.theme, props.color)};
-  background: ${props => props.theme.palette[props.color]};
+    props.color
+      ? props.theme.palette.getContrastText(
+          props.theme,
+          props.theme.palette[props.color],
+        )
+      : props.theme.palette.text};
+  background: ${props =>
+    props.color
+      ? props.theme.palette[props.color]
+      : props.theme.palette.grey.grey300};
   border: 1px solid transparent;
   border-radius: 4px;
   outline: none;
@@ -29,16 +37,26 @@ export const ButtonElement = styled.button`
       font-size: ${props.theme.typography.pxToRem(15)};
     `}
   &:hover {
-    background: ${props => darken(0.1, props.theme.palette[props.color])};
+    background: ${props =>
+      darken(
+        0.1,
+        props.color
+          ? props.theme.palette[props.color]
+          : props.theme.palette.grey.grey300,
+      )};
   }
   ${props =>
     props.outline &&
     css`
-      color: ${props.theme.palette[props.color]};
+      color: ${props.theme.palette[props.color || 'text']};
       background: ${props.theme.palette.white};
-      border-color: ${props.theme.palette[props.color]};
+      border-color: ${props.color
+        ? props.theme.palette[props.color]
+        : props.theme.palette.grey.grey300};
       &:hover {
-        background: ${transparentize(0.9, props.theme.palette[props.color])};
+        background: ${props.color
+          ? transparentize(0.9, props.theme.palette[props.color])
+          : props.theme.palette.grey.grey100};
       }
     `}
 `;
