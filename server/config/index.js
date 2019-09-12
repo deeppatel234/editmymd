@@ -5,22 +5,22 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const envFound = dotenv.config({ path: ENV_PATH });
 if (!envFound) {
-  throw new Error("⚠️  Couldn't find .env file  ⚠️");
+  throw new Error("Couldn't find .env file");
 }
 
 module.exports = {
   /**
-   * Your favorite port
+   * server port
    */
   port: parseInt(process.env.PORT, 10) || 3030,
 
   /**
-   * That long string from mlab
+   * mongodb connection string
    */
   databaseURL: process.env.DBURI,
 
   /**
-   * Your secret sauce
+   * jwt web token secret key
    */
   jwtSecret: process.env.JWT_SECRET,
 
