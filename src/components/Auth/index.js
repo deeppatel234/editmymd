@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import Request from 'Services';
+import { actions } from 'State/user';
 
-const Auth = ({ fallback: FallBack, children }) => {
+const Auth = ({ fallback: FallBack, children, setUserData }) => {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
@@ -19,7 +21,7 @@ const Auth = ({ fallback: FallBack, children }) => {
         url: '/user',
       })
         .then(res => {
-          console.log(res);
+          setUserData(res);
           setAuthenticated(true);
           setLoading(false);
         })
@@ -40,4 +42,9 @@ const Auth = ({ fallback: FallBack, children }) => {
   return <FallBack />;
 };
 
-export default Auth;
+export default connect(
+  null,
+  {
+    setUserData: actions.setUserData,
+  },
+)(Auth);
