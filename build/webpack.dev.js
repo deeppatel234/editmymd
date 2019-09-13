@@ -2,6 +2,8 @@ const merge = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+
 const common = require('./webpack.common.js');
 const { PUBLIC_DIR, DIST_DIR } = require('./paths');
 
@@ -21,5 +23,8 @@ module.exports = merge(common, {
       alwaysWriteToDisk: true,
     }),
     new HtmlWebpackHarddiskPlugin(),
+    new CopyPlugin([
+      { from: `${PUBLIC_DIR}/assets`, to: `${DIST_DIR}/assets` },
+    ]),
   ],
 });

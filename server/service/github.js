@@ -91,6 +91,17 @@ const searchRepositories = async (accessToken, { query, username }) => {
   }
 };
 
+const listBranches = async (accessToken, { owner, repo }) => {
+  try {
+    const { data } = await apiRequest(accessToken, {
+      url: `${GITHUB_API}/repos/${owner}/${repo}/branches`,
+    });
+    return data;
+  } catch (err) {
+    throw new Error('Unable to fetch branch list');
+  }
+};
+
 const getBranchInfo = async (accessToken, { owner, repo, branch }) => {
   try {
     const { data } = await apiRequest(accessToken, {
@@ -113,27 +124,31 @@ const getBranchTree = async (accessToken, { owner, repo, treeHash }) => {
   }
 };
 
-const getReadMDPaths = async (accessToken, { owner, branch, repo }) => {
+const getReadMDPaths = async (accessToken, { owner, branch, repo, sha }) => {
+  let treeHash = sha;
   try {
-    const branchInfo = await getBranchInfo(accessToken, {
-      owner,
-      repo,
-      branch,
-    });
-    if (!branchInfo) {
-      throw new Error('branch not found');
+    if (!treeHash) {
+      const branchInfo = await getBranchInfo(accessToken, {
+        owner,
+        repo,
+        branch,
+      });
+      treeHash = branchInfo.commit.sha;
+      if (!branchInfo) {
+        throw new Error('branch not found');
+      }
     }
     const { tree } = await getBranchTree(accessToken, {
       owner,
       repo,
-      treeHash: branchInfo.commit.sha,
+      treeHash,
     });
 
     return tree.filter(t => t.path.includes('README.md'));
   } catch (err) {
     throw new Error('Unable to fetch tree');
   }
-}
+};
 
 module.exports = {
   getBranchInfo,
@@ -141,6 +156,7 @@ module.exports = {
   getUser,
   getRepositories,
   searchRepositories,
+  listBranches,
   getBranchTree,
   getReadMDPaths,
 };

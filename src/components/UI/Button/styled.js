@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
 
 export const ButtonElement = styled.button`
+  display: inline-flex;
+  align-items: center;
   padding: 6px 16px;
   ${props => props.theme.typography.button}
   color: ${props =>
@@ -59,8 +61,8 @@ export const ButtonElement = styled.button`
           : props.theme.palette.grey.grey100};
       }
     `}
-`;
 
-export const LoaderWrapper = styled.span`
-  margin-right: 7px;
+  svg {
+    margin-right: 7px;
+  }
 `;

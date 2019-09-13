@@ -71,6 +71,7 @@
     "prettier/prettier": "error",
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js"]}],
     "jsx-a11y/click-events-have-key-events": 0,
-    "react/jsx-props-no-spreading": 0
+    "react/jsx-props-no-spreading": 0,
+    "import/prefer-default-export": 0
   }
 }

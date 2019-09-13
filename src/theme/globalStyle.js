@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
 
@@ -13,6 +13,17 @@ const GlobalStyle = createGlobalStyle`
   #root {
     width: 100%;
     height: 100%;
+  }
+
+  html {
+    ${props =>
+      props.theme.breakpoints.lessThan(props.theme.breakpoints.md)(css`
+        font-size: 14px;
+      `)}
+    ${props =>
+      props.theme.breakpoints.lessThan(props.theme.breakpoints.sm)(css`
+        font-size: 12px;
+      `)}
   }
 
   body {

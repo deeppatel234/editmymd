@@ -12,6 +12,7 @@ const COLOR = {
   WHITE: 'white',
   BLACK: 'black',
   DEFAULT: 'default',
+  DARK: 'dark',
 };
 
 const grey = {
@@ -28,7 +29,7 @@ const grey = {
 };
 
 const colors = {
-  [COLOR.PRIMARY]: '#cc3654',
+  [COLOR.PRIMARY]: '#04AA51',
   [COLOR.SECONDARY]: '#0caf78',
   [COLOR.SUCCESS]: '#34cc99',
   [COLOR.ERROR]: '#cc3654',
@@ -38,15 +39,17 @@ const colors = {
   [COLOR.DISABLED]: 'rgba(0, 0, 0, 0.38)',
   [COLOR.WHITE]: '#fff',
   [COLOR.BLACK]: '#000',
+  [COLOR.DARK]: '#24292E',
 };
 
 const contrastText = {
-  [COLOR.PRIMARY]: colors[COLOR.WHITE],
-  [COLOR.SECONDARY]: colors[COLOR.WHITE],
+  [colors[COLOR.PRIMARY]]: colors[COLOR.WHITE],
+  [colors[COLOR.SECONDARY]]: colors[COLOR.WHITE],
 };
 
 const background = {
   body: colors[COLOR.WHITE],
+  dark: colors[COLOR.DARK],
 };
 
 // https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
