@@ -9,10 +9,9 @@ const OAuth = ({ match }) => {
 
   if (token) {
     Request.setToken(token);
-    return <Redirect to="/app" />;
   }
 
-  return <Redirect to="/login" />;
+  return <Redirect to="/" />;
 };
 
 export default OAuth;

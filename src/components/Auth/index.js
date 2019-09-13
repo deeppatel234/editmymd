@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
 
-import service from 'Services';
+import Request from 'Services';
 
-const Auth = ({ children }) => {
+const Auth = ({ fallback: FallBack, children }) => {
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
@@ -13,13 +12,12 @@ const Auth = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = service.getToken();
+    const token = Request.getToken();
     if (token) {
-      service.setToken(token);
-      service
-        .apiGet({
-          url: '/user',
-        })
+      Request.setToken(token);
+      Request.apiGet({
+        url: '/user',
+      })
         .then(res => {
           console.log(res);
           setAuthenticated(true);
@@ -39,7 +37,7 @@ const Auth = ({ children }) => {
     return children;
   }
 
-  return <Redirect to="/login" />;
+  return <FallBack />;
 };
 
 export default Auth;

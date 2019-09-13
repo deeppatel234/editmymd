@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Auth from 'Components/Auth';
 import service from 'Services';
 
 const App = () => {
@@ -25,8 +24,4 @@ const App = () => {
   );
 };
 
-export default () => (
-  <Auth>
-    <App />
-  </Auth>
-);
+export default App;
