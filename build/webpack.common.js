@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const webpack = require('webpack');
 const PATHS = require('./paths');
 
 module.exports = {
@@ -41,4 +41,10 @@ module.exports = {
       Src: PATHS.SRC_DIR,
     },
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      GITHUB_CLIENT_KEY: JSON.stringify(process.env.GITHUB_CLIENT_KEY),
+    })
+  ]
 };

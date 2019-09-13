@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Typography, Button, GithubIcon, HeartIcon } from 'Components/UI';
+import config from '../../config';
 
 import {
   Header,
@@ -17,7 +18,7 @@ const HomePage = () => (
       <Typography variant="h5" color="white">
         ReadMD
       </Typography>
-      <Button size="small" color="primary">
+      <Button as="a" href={config.githubURL} size="small" color="primary">
         <GithubIcon width="1.5em" height="1.5em" />
         Login With GitHub
       </Button>
@@ -28,7 +29,7 @@ const HomePage = () => (
         <Typography variant="h6" color="subText">
           With ReadMD you can manage your all READMD files
         </Typography>
-        <Button color="primary">
+        <Button as="a" href={config.githubURL} color="primary">
           <GithubIcon width="1.5em" height="1.5em" />
           Sign up With GitHub
         </Button>

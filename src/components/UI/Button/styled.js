@@ -13,6 +13,7 @@ export const ButtonElement = styled.button`
           props.theme.palette[props.color],
         )
       : props.theme.palette.text};
+  text-decoration: none;
   background: ${props =>
     props.color
       ? props.theme.palette[props.color]
