@@ -18,6 +18,7 @@ export const HeaderWrapper = styled.div`
 
 export const BodyWrapper = styled.div`
   flex: 1;
+  background: ${props => props.theme.palette.grey.grey50};
 `;
 
 export const UserProfile = styled.div`

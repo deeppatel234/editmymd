@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import service from 'Services';
+import React from 'react';
 
-const App = () => {
-  const [repo, setRepo] = useState([]);
+import Empty from 'Components/Empty';
+import PageHeader from 'Components/PageHeader';
+import { Button, RepositoryIcon } from 'Components/UI';
 
-  useEffect(() => {
-    service
-      .apiGet({
-        url: '/repo',
-      })
-      .then(repo => setRepo(repo));
-  }, []);
-
+const AppHome = () => {
   return (
-    <div>
-      {repo.map(r => (
-        <div>
-          <Link to={`readmd/${r.name}`}>{r.name}</Link>
-        </div>
-      ))}
-    </div>
+    <>
+      <PageHeader title="Your Repository">
+        <Button color="primary">Add Repository</Button>
+      </PageHeader>
+      <Empty message="Add your first repository">
+        <RepositoryIcon height="50" width="50" color="subText" />
+      </Empty>
+    </>
   );
 };
 
-export default App;
+export default AppHome;
