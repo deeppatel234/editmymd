@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Empty from 'Components/Empty';
 import PageHeader from 'Components/PageHeader';
-import {
-  Button,
-  Input,
-  RepositoryIcon,
-  AddRepositoryIcon,
-} from 'Components/UI';
+import { Input, RepositoryIcon } from 'Components/UI';
 
 import Request from 'Services';
 
@@ -30,12 +25,7 @@ const AppHome = () => {
 
   return (
     <>
-      <PageHeader title="Repositories">
-        <Button color="primary">
-          <AddRepositoryIcon />
-          Add
-        </Button>
-      </PageHeader>
+      <PageHeader title="Repositories" />
       <AddRepositoryWrapper>
         <InputWrapper>
           <Input
