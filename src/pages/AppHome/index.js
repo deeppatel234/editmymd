@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Empty from 'Components/Empty';
 import PageHeader from 'Components/PageHeader';
@@ -8,7 +9,9 @@ const AppHome = () => {
   return (
     <>
       <PageHeader title="Your Repository">
-        <Button color="primary">Add Repository</Button>
+        <Link to="/add-repository">
+          <Button color="primary">Add Repository</Button>
+        </Link>
       </PageHeader>
       <Empty message="Add your first repository">
         <RepositoryIcon height="50" width="50" color="subText" />

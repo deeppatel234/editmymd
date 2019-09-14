@@ -17,7 +17,9 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const BodyWrapper = styled.div`
+  display: flex;
   flex: 1;
+  flex-direction: column;
   background: ${props => props.theme.palette.grey.grey50};
 `;
 

@@ -39,6 +39,10 @@ const GlobalStyle = createGlobalStyle`
   input:-moz-placeholder {
     font-family: ${props => props.theme.typography.body.fontFamily};
   }
+
+  a {
+    text-decoration: none;
+  }
 `;
 
 export default GlobalStyle;
