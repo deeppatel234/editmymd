@@ -6,13 +6,13 @@ import Layout from 'Components/Layout';
 import Homepage from 'Pages/HomePage';
 import OAuth from 'Pages/OAuth';
 import AppHome from 'Pages/AppHome';
-import ReadMD from 'Pages/ReadMD';
+import Editor from 'Pages/Editor';
 import RepoDetails from 'Pages/RepoDetails';
 
 const AppRoutes = () => (
   <Auth fallback={Homepage}>
     <Layout>
-      <Route path="/readmd/:repo" component={ReadMD} />
+      <Route path="/editor" component={Editor} />
       <Route exact path="/repo/:repository" component={RepoDetails} />
       <Route exact path="/" component={AppHome} />
     </Layout>

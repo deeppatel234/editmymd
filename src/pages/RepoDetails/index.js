@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import Empty from 'Components/Empty';
 import PageHeader from 'Components/PageHeader';
@@ -11,6 +12,7 @@ import { PathListWrapper, PathList, PathListChild } from './styled';
 const RepoDetails = ({ match }) => {
   const [paths, setPaths] = useState([]);
   const { repository } = match.params;
+  const branch = 'master';
 
   useEffect(() => {
     Request.apiGet({
@@ -41,10 +43,17 @@ const RepoDetails = ({ match }) => {
           {paths.map(({ path }) => {
             return (
               <PathListChild key={path}>
-                <Typography>
-                  <FileIcon height="1.5em" width="1.5em" />
-                  {path}
-                </Typography>
+                <Link
+                  to={{
+                    pathname: '/editor',
+                    state: { branch, path, repo: repository },
+                  }}
+                >
+                  <Typography>
+                    <FileIcon height="1.5em" width="1.5em" />
+                    {path}
+                  </Typography>
+                </Link>
               </PathListChild>
             );
           })}
