@@ -6,3 +6,5 @@ export { default as AddRepositoryIcon } from './AddRepository';
 export { default as RepositoryIcon } from './Repository';
 export { default as StarIcon } from './Star';
 export { default as LockIcon } from './Lock';
+export { default as BookIcon } from './Book';
+export { default as FileIcon } from './File';

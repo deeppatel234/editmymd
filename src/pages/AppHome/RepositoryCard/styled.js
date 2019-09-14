@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 
-export const RepoCard = styled.div`
+export const RepoCard = styled(Link)`
   width: 30%;
   margin: ${props => props.theme.spacing(1)};
   padding: ${props => props.theme.spacing(2)};
+  color: inherit;
   background: ${props => props.theme.palette.white};
   border: 1px solid ${props => props.theme.palette.grey.grey300};
   border-radius: 4px;

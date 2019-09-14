@@ -12,7 +12,7 @@ import { RepoCard, CardCounts, CardTitle } from './styled';
 
 const RepositoryCard = ({ isPrivate, name, forkCount, starCount }) => {
   return (
-    <RepoCard>
+    <RepoCard to={`repo/${name}`}>
       <CardTitle>
         {isPrivate ? (
           <LockIcon width="1.5em" height="1.5em" />
