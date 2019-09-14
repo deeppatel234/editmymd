@@ -69,12 +69,24 @@ const getUser = async accessToken => {
   }
 };
 
+const prepareRepoData = repo => {
+  return {
+    id: repo.id,
+    name: repo.name,
+    isPrivate: repo.private,
+    forkCount: repo.forks,
+    starCount: repo.stargazers_count,
+    defaultBranch: repo.default_branch,
+    description: repo.description,
+  };
+};
+
 const getRepositories = async accessToken => {
   try {
     const { data } = await apiRequest(accessToken, {
       url: URL.REPOSITORY,
     });
-    return data;
+    return data.map(d => prepareRepoData(d));
   } catch (err) {
     throw new Error('Unable to fetch repository');
   }

@@ -5,3 +5,4 @@ export { default as ForkIcon } from './Fork';
 export { default as AddRepositoryIcon } from './AddRepository';
 export { default as RepositoryIcon } from './Repository';
 export { default as StarIcon } from './Star';
+export { default as LockIcon } from './Lock';

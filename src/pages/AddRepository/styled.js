@@ -4,6 +4,7 @@ export const AddRepositoryWrapper = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  min-height: 0;
   padding: ${props => props.theme.spacing(2)};
 `;
 
@@ -15,4 +16,13 @@ export const InputWrapper = styled.div`
   .search-input {
     max-width: 600px;
   }
+`;
+
+export const RepositoryCardWrapper = styled.div`
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: ${props => props.theme.spacing(2)};
+  overflow: auto;
 `;

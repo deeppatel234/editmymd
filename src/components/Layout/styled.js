@@ -20,6 +20,7 @@ export const BodyWrapper = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  min-height: 0;
   background: ${props => props.theme.palette.grey.grey50};
 `;
 

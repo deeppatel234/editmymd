@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Empty from 'Components/Empty';
 import PageHeader from 'Components/PageHeader';
@@ -9,10 +9,24 @@ import {
   AddRepositoryIcon,
 } from 'Components/UI';
 
-import { AddRepositoryWrapper, InputWrapper } from './styled';
+import Request from 'Services';
+
+import RepositoryCard from './RepositoryCard';
+
+import {
+  AddRepositoryWrapper,
+  InputWrapper,
+  RepositoryCardWrapper,
+} from './styled';
 
 const AddRepository = () => {
   const [repoList, setRepoList] = useState([]);
+
+  useEffect(() => {
+    Request.apiGet({
+      url: '/repo',
+    }).then(repo => setRepoList(repo));
+  }, []);
 
   return (
     <>
@@ -34,6 +48,11 @@ const AddRepository = () => {
             <RepositoryIcon height="50" width="50" color="subText" />
           </Empty>
         )}
+        <RepositoryCardWrapper>
+          {repoList.map(repo => (
+            <RepositoryCard key={repo.id} {...repo} />
+          ))}
+        </RepositoryCardWrapper>
       </AddRepositoryWrapper>
     </>
   );
