@@ -162,6 +162,30 @@ const getReadMDPaths = async (accessToken, { owner, branch, repo, sha }) => {
   }
 };
 
+const prepareFileContentData = file => {
+  return {
+    name: file.name,
+    content: Buffer.from(file.content, 'base64').toString('utf-8'),
+    path: file.path,
+    sha: file.sha,
+    fileURL: file.html_url,
+    size: file.size,
+    downloadULR: file.download_url,
+  };
+};
+
+const getFileContent = async (accessToken, { owner, repo, path, branch }) => {
+  try {
+    const { data } = await apiRequest(accessToken, {
+      url: `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}?ref=${branch}`,
+    });
+
+    return prepareFileContentData(data);
+  } catch (err) {
+    throw new Error('Unable to fetch branch list');
+  }
+};
+
 module.exports = {
   getBranchInfo,
   getAccessToken,
@@ -171,4 +195,5 @@ module.exports = {
   listBranches,
   getBranchTree,
   getReadMDPaths,
+  getFileContent,
 };
