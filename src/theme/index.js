@@ -10,7 +10,7 @@ const themeConfig = {
   typography,
   palette,
   shadows,
-  spacing: spacing(),
+  spacing,
   zIndex,
   breakpoints,
 };
