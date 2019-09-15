@@ -18,7 +18,7 @@ const userSaveOrUpdate = async user => {
       userId: user.userId,
     },
     user,
-    { upsert: true },
+    { new: true, upsert: true },
   );
 };
 
