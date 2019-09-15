@@ -1,10 +1,6 @@
 import styled from 'styled-components';
 
-export const PathListWrapper = styled.div`
-  display: flex;
+export const EditorWrapper = styled.div`
   flex: 1;
-  flex-direction: column;
-  align-items: center;
-  min-height: 0;
-  padding: ${props => props.theme.spacing(2)};
+  overflow: auto;
 `;
