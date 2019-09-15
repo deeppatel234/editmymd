@@ -19,7 +19,7 @@ const AppRoutes = () => (
   </Auth>
 );
 
-const AppRoute = () => (
+const App = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/oauth/:token" component={OAuth} />
@@ -28,4 +28,4 @@ const AppRoute = () => (
   </BrowserRouter>
 );
 
-export default AppRoute;
+export default App;
