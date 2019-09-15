@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 import spacingFactor from 'Utilities/spacingFactor';
-import App from './App';
+import App from './app';
 import reduxStore from './store';
 
 import { themeConfig, GlobalStyle } from './theme';
