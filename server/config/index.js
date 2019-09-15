@@ -3,10 +3,7 @@ const { ENV_PATH } = require('../path');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-const envFound = dotenv.config({ path: ENV_PATH });
-if (!envFound) {
-  throw new Error("Couldn't find .env file");
-}
+dotenv.config({ path: ENV_PATH });
 
 module.exports = {
   /**
