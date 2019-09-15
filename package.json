@@ -6,9 +6,10 @@
   "scripts": {
     "build:dev": "webpack --config build/webpack.dev.js",
     "build:prod": "webpack --config build/webpack.prod.js",
-    "start": "npm run build:prod && node server/index.js",
+    "start": "node server/index.js",
     "dev": "NODE_ENV='development' nodemon --watch server server/index.js",
-    "debug": "NODE_ENV='development' node --nolazy --inspect-brk=9229 server server/index.js"
+    "debug": "NODE_ENV='development' node --nolazy --inspect-brk=9229 server server/index.js",
+    "heroku-postbuild": "npm run build:prod"
   },
   "repository": {
     "type": "git",
