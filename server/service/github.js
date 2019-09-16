@@ -165,7 +165,8 @@ const getReadMDPaths = async (accessToken, { owner, branch, repo, sha }) => {
 const prepareFileContentData = file => {
   return {
     name: file.name,
-    content: Buffer.from(file.content, 'base64').toString('utf-8'),
+    content:
+      file.content && Buffer.from(file.content, 'base64').toString('utf-8'),
     path: file.path,
     sha: file.sha,
     fileURL: file.html_url,
@@ -182,7 +183,43 @@ const getFileContent = async (accessToken, { owner, repo, path, branch }) => {
 
     return prepareFileContentData(data);
   } catch (err) {
-    throw new Error('Unable to fetch branch list');
+    throw new Error('Unable to get file content');
+  }
+};
+
+const prepareCommitData = data => {
+  return {
+    url: data.html_url,
+    author: data.author,
+    committer: data.committer,
+    message: data.message,
+  };
+};
+
+const commitFileContent = async (
+  accessToken,
+  { owner, repo, path, branch, message, content, sha },
+) => {
+  const base64Content = Buffer.from(content).toString('base64');
+  try {
+    const { data } = await apiRequest(accessToken, {
+      method: 'put',
+      url: `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`,
+      data: {
+        message,
+        content: base64Content,
+        sha,
+        branch,
+      },
+    });
+
+    return {
+      content: prepareFileContentData(data.content),
+      commit: prepareCommitData(data.commit),
+    };
+  } catch (err) {
+    console.log(err);
+    throw new Error('Unable to commit file');
   }
 };
 
@@ -196,4 +233,5 @@ module.exports = {
   getBranchTree,
   getReadMDPaths,
   getFileContent,
+  commitFileContent,
 };

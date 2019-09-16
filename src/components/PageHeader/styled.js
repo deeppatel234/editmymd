@@ -17,3 +17,12 @@ export const PageHeaderWrapper = styled.div`
     }
   }
 `;
+
+export const HeaderButtons = styled.div`
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-left: ${props => props.theme.spacing(2)};
+  }
+`;

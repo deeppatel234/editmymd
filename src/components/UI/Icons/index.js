@@ -10,3 +10,4 @@ export { default as BookIcon } from './Book';
 export { default as FileIcon } from './File';
 export { default as DiffIcon } from './Diff';
 export { default as MarkDownIcon } from './MarkDown';
+export { default as CommitIcon } from './Commit';

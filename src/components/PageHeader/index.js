@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Typography } from 'Components/UI';
-import { PageHeaderWrapper } from './styled';
+import { PageHeaderWrapper, HeaderButtons } from './styled';
 
 const PageHeader = ({ title, children }) => {
   return (
@@ -10,6 +10,8 @@ const PageHeader = ({ title, children }) => {
       {children}
     </PageHeaderWrapper>
   );
-}
+};
+
+PageHeader.Buttons = HeaderButtons;
 
 export default PageHeader;

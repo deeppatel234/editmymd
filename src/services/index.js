@@ -66,6 +66,32 @@ class Request {
    * @param {String} payload.url
    * @param {Object} payload.data
    */
+  apiPut({ url, data = {} }) {
+    return new Promise((resolve, rejects) => {
+      axios({
+        method: 'put',
+        url: `/api${url}`,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          authorization: this.token,
+        },
+        data,
+      })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(rejects);
+    });
+  }
+
+  /**
+   * Request data from API server
+   *
+   * @param {Object} payload
+   * @param {String} payload.url
+   * @param {Object} payload.data
+   */
   apiGet({ url, params = {} }) {
     return new Promise((resolve, rejects) => {
       axios({
