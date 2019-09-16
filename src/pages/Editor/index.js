@@ -8,7 +8,8 @@ import 'codemirror/lib/codemirror.css';
 import 'highlight.js/styles/github-gist.css';
 
 import PageHeader from 'Components/PageHeader';
-import { RepositoryIcon, BookIcon, FileIcon, Typography } from 'Components/UI';
+import DiffView from 'Components/DiffView';
+import { Button, DiffIcon, MarkDownIcon } from 'Components/UI';
 
 import Request from 'Services';
 
@@ -16,6 +17,9 @@ import { EditorWrapper } from './styled';
 
 const EditorPage = ({ location }) => {
   const [content, setContent] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [masterContent, setMasterContent] = useState('');
+  const [isDiffView, setIsDiffView] = useState(false);
   const { branch, path, repo } = location.state;
 
   useEffect(() => {
@@ -26,25 +30,57 @@ const EditorPage = ({ location }) => {
         path,
         repo,
       },
-    }).then(({ content: fileContent }) => setContent(fileContent));
+    }).then(({ content: fileContent }) => {
+      setMasterContent(fileContent);
+      setContent(fileContent);
+      setIsLoading(false);
+    });
   }, []);
 
-  if (!content) {
+  const onChangeDiffView = diffViewValue => {
+    setContent(diffViewValue);
+  };
+
+  const onChangeEditorValue = editorValue => {
+    setContent(editorValue);
+  };
+
+  if (isLoading) {
     return null;
   }
 
   return (
     <>
-      <PageHeader title={path} />
+      <PageHeader title={path}>
+        <Button color="primary" onClick={() => setIsDiffView(!isDiffView)}>
+          {isDiffView ? (
+            <>
+              <MarkDownIcon width="1.5em" height="1.5em" /> Editor View
+            </>
+          ) : (
+            <>
+              <DiffIcon width="1.3em" height="1.3em" /> Diff View
+            </>
+          )}
+        </Button>
+      </PageHeader>
       <EditorWrapper>
-        <MDEditor
-          defaultValue={content}
-          // onChange={onChageValue}
-          parserOptions={{
-            breaks: false,
-            highlight: code => hljs.highlightAuto(code).value,
-          }}
-        />
+        {isDiffView ? (
+          <DiffView
+            value={content}
+            originalValue={masterContent}
+            onChange={onChangeDiffView}
+          />
+        ) : (
+          <MDEditor
+            defaultValue={content}
+            onChange={onChangeEditorValue}
+            parserOptions={{
+              breaks: false,
+              highlight: code => hljs.highlightAuto(code).value,
+            }}
+          />
+        )}
       </EditorWrapper>
     </>
   );
