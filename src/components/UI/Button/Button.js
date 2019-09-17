@@ -1,16 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// import { Loader } from '../Loader';
-import { ButtonElement, LoaderWrapper } from './styled';
+import { Loader } from '../Loader';
+import { ButtonElement } from './styled';
 
-const Button = ({ children, loading, ...restProps }) => (
-  <ButtonElement {...restProps}>
-    {/* {loading && (
-      <LoaderWrapper data-testid="loading">
-        <Loader type="circle" size="1.5em" />
-      </LoaderWrapper>
-    )} */}
+const Button = ({ children, loading, disabled, ...restProps }) => (
+  <ButtonElement {...restProps} disabled={loading || disabled}>
+    {loading && <Loader height="1.5em" width="1.5em" />}
     {children}
   </ButtonElement>
 );

@@ -11,3 +11,6 @@ export { default as FileIcon } from './File';
 export { default as DiffIcon } from './Diff';
 export { default as MarkDownIcon } from './MarkDown';
 export { default as CommitIcon } from './Commit';
+export { default as CloseIcon } from './Close';
+export { default as BarLoader } from './BarLoader';
+export { default as CircleLoader } from './CircleLoader';

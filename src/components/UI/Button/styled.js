@@ -63,6 +63,17 @@ export const ButtonElement = styled.button`
       }
     `}
 
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.7;
+      cursor: default;
+
+      &:hover {
+        background: ${props.theme.palette[props.color]};
+      }
+    `}
+
   svg {
     margin-right: 7px;
   }

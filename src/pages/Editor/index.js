@@ -9,6 +9,7 @@ import 'highlight.js/styles/github-gist.css';
 
 import PageHeader from 'Components/PageHeader';
 import DiffView from 'Components/DiffView';
+import CommitModal from 'Components/CommitModal';
 import { Button, DiffIcon, MarkDownIcon, CommitIcon } from 'Components/UI';
 
 import Request from 'Services';
@@ -20,6 +21,7 @@ const EditorPage = ({ location }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [masterContent, setMasterContent] = useState('');
   const [isDiffView, setIsDiffView] = useState(false);
+  const [showCommitModal, setShowCommitModal] = useState(false);
   const [fileData, setFileData] = useState({});
   const { branch, path, repo } = location.state;
 
@@ -48,19 +50,15 @@ const EditorPage = ({ location }) => {
   };
 
   const onCommitClick = () => {
-    Request.apiPut({
-      url: '/file/commit',
-      data: {
-        branch,
-        path,
-        repo,
-        message: 'this is test yahhhh',
-        sha: fileData.sha,
-        content,
-      },
-    }).then(({ content: updatedContent }) => {
-      setFileData(updatedContent);
-    });
+    setShowCommitModal(true);
+  };
+
+  const onCloseCommitModal = () => {
+    setShowCommitModal(false);
+  };
+
+  const onCommit = ({ content: commitFileContent }) => {
+    setFileData(commitFileContent);
   };
 
   if (isLoading) {
@@ -87,6 +85,16 @@ const EditorPage = ({ location }) => {
           </Button>
         </PageHeader.Buttons>
       </PageHeader>
+      <CommitModal
+        onClose={onCloseCommitModal}
+        visible={showCommitModal}
+        branch={branch}
+        path={path}
+        repo={repo}
+        content={content}
+        sha={fileData.sha}
+        onCommit={onCommit}
+      />
       <EditorWrapper>
         {isDiffView ? (
           <DiffView
