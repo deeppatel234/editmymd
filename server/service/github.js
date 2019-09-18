@@ -108,7 +108,7 @@ const listBranches = async (accessToken, { owner, repo }) => {
     const { data } = await apiRequest(accessToken, {
       url: `${GITHUB_API}/repos/${owner}/${repo}/branches`,
     });
-    return data;
+    return data.map(d => d.name);
   } catch (err) {
     throw new Error('Unable to fetch branch list');
   }

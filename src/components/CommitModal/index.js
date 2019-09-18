@@ -7,7 +7,7 @@ import Request from 'Services';
 
 import { CommitMessage, CommitTable, CommitMessageWrapper } from './styled';
 
-const CommitPage = ({
+const CommitModal = ({
   onClose,
   content,
   user,
@@ -92,4 +92,4 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps)(CommitPage);
+export default connect(mapStateToProps)(CommitModal);

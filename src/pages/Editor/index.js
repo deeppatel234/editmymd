@@ -16,29 +16,33 @@ import Request from 'Services';
 
 import { EditorWrapper } from './styled';
 
-const EditorPage = ({ location }) => {
+const EditorPage = ({ history, location }) => {
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [masterContent, setMasterContent] = useState('');
   const [isDiffView, setIsDiffView] = useState(false);
   const [showCommitModal, setShowCommitModal] = useState(false);
   const [fileData, setFileData] = useState({});
-  const { branch, path, repo } = location.state;
+  const { branch, path, repo, isNewFile } = location.state;
 
   useEffect(() => {
-    Request.apiGet({
-      url: '/file',
-      params: {
-        branch,
-        path,
-        repo,
-      },
-    }).then(({ content: fileContent, ...restFileData }) => {
-      setMasterContent(fileContent);
-      setContent(fileContent);
-      setFileData(restFileData);
+    if (!isNewFile) {
+      Request.apiGet({
+        url: '/file',
+        params: {
+          branch,
+          path,
+          repo,
+        },
+      }).then(({ content: fileContent, ...restFileData }) => {
+        setMasterContent(fileContent);
+        setContent(fileContent);
+        setFileData(restFileData);
+        setIsLoading(false);
+      });
+    } else {
       setIsLoading(false);
-    });
+    }
   }, []);
 
   const onChangeDiffView = diffViewValue => {
@@ -58,7 +62,14 @@ const EditorPage = ({ location }) => {
   };
 
   const onCommit = ({ content: commitFileContent }) => {
+    setMasterContent(content);
     setFileData(commitFileContent);
+    if (isNewFile) {
+      history.replace({
+        ...location,
+        state: { ...location.state, isNewFile: false },
+      });
+    }
   };
 
   if (isLoading) {

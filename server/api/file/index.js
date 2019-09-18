@@ -43,7 +43,7 @@ router.put(
       branch: Joi.string().required(),
       message: Joi.string().required(),
       content: Joi.string().required(),
-      sha: Joi.string().required(),
+      sha: Joi.string(),
     },
   }),
   async (req, res) => {

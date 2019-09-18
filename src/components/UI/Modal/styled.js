@@ -47,6 +47,8 @@ export const BodyWrapper = styled.div`
 `;
 
 export const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   min-width: 50%;
   max-width: 80%;
   max-height: 80%;
@@ -89,7 +91,9 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const ModalBody = styled.div`
+  flex: 1;
   padding: ${props => props.theme.spacing(2)};
+  overflow: auto;
 `;
 
 export const FooterWrapper = styled.div`

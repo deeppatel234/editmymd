@@ -1,12 +1,16 @@
 import styled from 'styled-components';
 
-export const PathListWrapper = styled.div`
+export const RepoDetailsWrapper = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
   min-height: 0;
   padding: ${props => props.theme.spacing(2)};
+`;
+
+export const RepoControl = styled.div`
+  padding: ${props => props.theme.spacing(2, 0)};
 `;
 
 export const PathList = styled.ul`

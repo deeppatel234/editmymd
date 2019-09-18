@@ -3,14 +3,28 @@ import { Link } from 'react-router-dom';
 
 import Empty from 'Components/Empty';
 import PageHeader from 'Components/PageHeader';
-import { RepositoryIcon, BookIcon, FileIcon, Typography } from 'Components/UI';
+import CreateFileModal from 'Components/CreateFileModal';
+import {
+  RepositoryIcon,
+  Button,
+  BookIcon,
+  FileIcon,
+  MarkDownIcon,
+  Typography,
+} from 'Components/UI';
 
 import Request from 'Services';
 
-import { PathListWrapper, PathList, PathListChild } from './styled';
+import {
+  RepoDetailsWrapper,
+  PathList,
+  PathListChild,
+  RepoControl,
+} from './styled';
 
-const RepoDetails = ({ match }) => {
+const RepoDetails = ({ match, history }) => {
   const [paths, setPaths] = useState([]);
+  const [showCreateFileModal, setShowCreateFileModal] = useState(false);
   const { repository } = match.params;
   const branch = 'master';
 
@@ -24,6 +38,25 @@ const RepoDetails = ({ match }) => {
     }).then(path => setPaths(path));
   }, []);
 
+  const onCreateFileClick = () => {
+    setShowCreateFileModal(true);
+  };
+
+  const onCloseCreateFileModal = () => {
+    setShowCreateFileModal(false);
+  };
+
+  const onFileCreate = fileName => {
+    console.log(fileName);
+    onCloseCreateFileModal();
+    history.push('/editor', {
+      branch,
+      path: fileName,
+      repo: repository,
+      isNewFile: true,
+    });
+  };
+
   return (
     <>
       <PageHeader
@@ -34,11 +67,23 @@ const RepoDetails = ({ match }) => {
         }
       />
       {!paths.length && (
-        <Empty message="No READMD Files Found">
+        <Empty message="No Markdown Files Found">
           <BookIcon height="50" width="50" color="subText" />
         </Empty>
       )}
-      <PathListWrapper>
+      <CreateFileModal
+        onClose={onCloseCreateFileModal}
+        visible={showCreateFileModal}
+        repo={repository}
+        onFileCreate={onFileCreate}
+      />
+      <RepoDetailsWrapper>
+        <RepoControl>
+          <Button color="primary" onClick={onCreateFileClick}>
+            <MarkDownIcon />
+            Create New Markdown File
+          </Button>
+        </RepoControl>
         <PathList>
           {paths.map(({ path }) => {
             return (
@@ -46,7 +91,7 @@ const RepoDetails = ({ match }) => {
                 <Link
                   to={{
                     pathname: '/editor',
-                    state: { branch, path, repo: repository },
+                    state: { branch, path, repo: repository, isNewFile: false },
                   }}
                 >
                   <Typography>
@@ -58,7 +103,7 @@ const RepoDetails = ({ match }) => {
             );
           })}
         </PathList>
-      </PathListWrapper>
+      </RepoDetailsWrapper>
     </>
   );
 };

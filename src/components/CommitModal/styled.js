@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 
 export const CommitTable = styled.table`
-  width: 100%;
-
-  td {
-    padding: ${props => props.theme.spacing(1, 0)};
+  tr {
+    td {
+      padding: ${props => props.theme.spacing(1, 0)};
+      &:first-child {
+        padding-right: ${props => props.theme.spacing(3)};
+      }
+    }
   }
 `;
 
