@@ -136,7 +136,7 @@ const getBranchTree = async (accessToken, { owner, repo, treeHash }) => {
   }
 };
 
-const getReadMDPaths = async (accessToken, { owner, branch, repo, sha }) => {
+const getMDFilePaths = async (accessToken, { owner, branch, repo, sha }) => {
   let treeHash = sha;
   try {
     if (!treeHash) {
@@ -156,7 +156,7 @@ const getReadMDPaths = async (accessToken, { owner, branch, repo, sha }) => {
       treeHash,
     });
 
-    return tree.filter(t => t.path.includes('README.md'));
+    return tree.filter(t => t.path.endsWith('.md'));
   } catch (err) {
     throw new Error('Unable to fetch tree');
   }
@@ -231,7 +231,7 @@ module.exports = {
   searchRepositories,
   listBranches,
   getBranchTree,
-  getReadMDPaths,
+  getMDFilePaths,
   getFileContent,
   commitFileContent,
 };

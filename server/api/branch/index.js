@@ -46,7 +46,7 @@ router.get(
 
     try {
       res.json(
-        await getService(type, 'getReadMDPaths')(accessToken, {
+        await getService(type, 'getMDFilePaths')(accessToken, {
           owner: userId,
           repo,
           branch,
