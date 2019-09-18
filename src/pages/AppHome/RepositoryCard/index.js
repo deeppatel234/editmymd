@@ -10,9 +10,20 @@ import {
 
 import { RepoCard, CardCounts, CardTitle } from './styled';
 
-const RepositoryCard = ({ isPrivate, name, forkCount, starCount }) => {
+const RepositoryCard = ({
+  isPrivate,
+  name,
+  forkCount,
+  starCount,
+  defaultBranch,
+}) => {
   return (
-    <RepoCard to={`repo/${name}`}>
+    <RepoCard
+      to={{
+        pathname: `repo/${name}`,
+        state: { defaultBranch },
+      }}
+    >
       <CardTitle>
         {isPrivate ? (
           <LockIcon width="1.5em" height="1.5em" />

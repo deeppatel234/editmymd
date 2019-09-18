@@ -22,17 +22,18 @@ import {
   RepoControl,
 } from './styled';
 
-const RepoDetails = ({ match, history }) => {
-  const [paths, setPaths] = useState([]);
-  const [showCreateFileModal, setShowCreateFileModal] = useState(false);
+const RepoDetails = ({ match, history, location }) => {
   const { repository } = match.params;
-  const branch = 'master';
+  const { defaultBranch } = location.state;
+  const [paths, setPaths] = useState([]);
+  const [branch, setBranch] = useState(defaultBranch);
+  const [showCreateFileModal, setShowCreateFileModal] = useState(false);
 
   useEffect(() => {
     Request.apiGet({
       url: '/branch/tree',
       params: {
-        branch: 'master',
+        branch,
         repo: repository,
       },
     }).then(path => setPaths(path));
@@ -47,7 +48,6 @@ const RepoDetails = ({ match, history }) => {
   };
 
   const onFileCreate = fileName => {
-    console.log(fileName);
     onCloseCreateFileModal();
     history.push('/editor', {
       branch,
