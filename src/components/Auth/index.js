@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
+import AppLoading from 'Components/AppLoading';
 import Request from 'Services';
 import { actions } from 'State/user';
 
@@ -32,7 +33,7 @@ const Auth = ({ fallback: FallBack, children, setUserData }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <AppLoading />;
   }
 
   if (isAuthenticated) {

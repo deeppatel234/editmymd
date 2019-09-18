@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Auth from 'Components/Auth';
 import Layout from 'Components/Layout';
+import AppLoading from 'Components/AppLoading';
 import Homepage from 'Pages/HomePage';
 import OAuth from 'Pages/OAuth';
 import AppHome from 'Pages/AppHome';
@@ -20,12 +21,14 @@ const AppRoutes = () => (
 );
 
 const App = () => (
-  <BrowserRouter>
-    <Switch>
-      <Route path="/oauth/:token" component={OAuth} />
-      <Route path="/" component={AppRoutes} />
-    </Switch>
-  </BrowserRouter>
+  <React.Suspense fallback={<AppLoading />}>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/oauth/:token" component={OAuth} />
+        <Route path="/" component={AppRoutes} />
+      </Switch>
+    </BrowserRouter>
+  </React.Suspense>
 );
 
 export default App;

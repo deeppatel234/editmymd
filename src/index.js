@@ -16,9 +16,7 @@ const RenderApp = () => (
     <ThemeProvider theme={themeConfig}>
       <>
         <GlobalStyle />
-        <React.Suspense fallback={<div>Loading.....</div>}>
-          <App />
-        </React.Suspense>
+        <App />
       </>
     </ThemeProvider>
   </Provider>
