@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Empty from 'Components/Empty';
 import PageHeader from 'Components/PageHeader';
 import CreateFileModal from 'Components/CreateFileModal';
+import BranchModal from 'Components/BranchModal';
 import {
   RepositoryIcon,
   Button,
@@ -28,8 +29,9 @@ const RepoDetails = ({ match, history, location }) => {
   const [paths, setPaths] = useState([]);
   const [branch, setBranch] = useState(defaultBranch);
   const [showCreateFileModal, setShowCreateFileModal] = useState(false);
+  const [showBranchModal, setShowBranchModal] = useState(false);
 
-  useEffect(() => {
+  const fetchFileTree = () => {
     Request.apiGet({
       url: '/branch/tree',
       params: {
@@ -37,7 +39,11 @@ const RepoDetails = ({ match, history, location }) => {
         repo: repository,
       },
     }).then(path => setPaths(path));
-  }, []);
+  };
+
+  useEffect(() => {
+    fetchFileTree();
+  }, [branch]);
 
   const onCreateFileClick = () => {
     setShowCreateFileModal(true);
@@ -55,6 +61,18 @@ const RepoDetails = ({ match, history, location }) => {
       repo: repository,
       isNewFile: true,
     });
+  };
+
+  const onClickSelectBranch = () => {
+    setShowBranchModal(true);
+  };
+
+  const onCloseBranchModal = () => {
+    setShowBranchModal(false);
+  };
+
+  const onBranchSelect = branchName => {
+    setBranch(branchName);
   };
 
   return (
@@ -77,8 +95,17 @@ const RepoDetails = ({ match, history, location }) => {
         repo={repository}
         onFileCreate={onFileCreate}
       />
+      <BranchModal
+        onClose={onCloseBranchModal}
+        visible={showBranchModal}
+        repo={repository}
+        onBranchSelect={onBranchSelect}
+      />
       <RepoDetailsWrapper>
         <RepoControl>
+          <Button color="primary" onClick={onClickSelectBranch}>
+            {branch}
+          </Button>
           <Button color="primary" onClick={onCreateFileClick}>
             <MarkDownIcon />
             Create New Markdown File

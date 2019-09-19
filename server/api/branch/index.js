@@ -32,6 +32,34 @@ router.get(
 );
 
 router.get(
+  '/info',
+  celebrate({
+    query: {
+      repo: Joi.string().required(),
+      branch: Joi.string().required(),
+    },
+  }),
+  async (req, res) => {
+    const { accessToken, type, userId } = req.user;
+    const { repo, branch } = req.query;
+
+    try {
+      res.json(
+        await getService(type, 'getBranchInfo')(accessToken, {
+          owner: userId,
+          repo,
+          branch,
+        }),
+      );
+    } catch (err) {
+      res.status(500).json({
+        message: 'Something went wrong',
+      });
+    }
+  },
+);
+
+router.get(
   '/tree',
   celebrate({
     query: {
