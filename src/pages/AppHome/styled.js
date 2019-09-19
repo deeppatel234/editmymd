@@ -20,7 +20,6 @@ export const InputWrapper = styled.div`
 
 export const RepositoryCardWrapper = styled.div`
   display: flex;
-  flex: 1;
   flex-wrap: wrap;
   justify-content: center;
   padding: ${props => props.theme.spacing(2)};

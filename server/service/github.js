@@ -97,7 +97,7 @@ const searchRepositories = async (accessToken, { query, username }) => {
     const { data } = await apiRequest(accessToken, {
       url: `${URL.SEARCH_REPOSITORY}?q=${query}+user:${username}`,
     });
-    return data;
+    return data.items.map(d => prepareRepoData(d));
   } catch (err) {
     throw new Error('Unable to fetch tree');
   }

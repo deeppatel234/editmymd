@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ContentLoader from 'Components/ContentLoader';
 import {
   RepositoryIcon,
   LockIcon,
@@ -8,7 +9,7 @@ import {
   Typography,
 } from 'Components/UI';
 
-import { RepoCard, CardCounts, CardTitle } from './styled';
+import { RepoCard, RepoLoadingCard, CardCounts, CardTitle } from './styled';
 
 const RepositoryCard = ({
   isPrivate,
@@ -45,5 +46,13 @@ const RepositoryCard = ({
     </RepoCard>
   );
 };
+
+RepositoryCard.Loader = () => (
+  <RepoLoadingCard>
+    <ContentLoader height={65}>
+      <rect x="0" y="0" rx="4" ry="4" width="400" height="65" />
+    </ContentLoader>
+  </RepoLoadingCard>
+);
 
 export default RepositoryCard;

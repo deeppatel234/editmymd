@@ -26,6 +26,23 @@ export const RepoCard = styled(Link)`
   }
 `;
 
+export const RepoLoadingCard = styled.div`
+  width: 30%;
+  margin: ${props => props.theme.spacing(1)};
+
+  ${props =>
+    props.theme.breakpoints.lessThan(props.theme.breakpoints.sm)(css`
+      width: 100%;
+    `)}
+  ${props =>
+    props.theme.breakpoints.between(
+      props.theme.breakpoints.sm,
+      props.theme.breakpoints.md,
+    )(css`
+      width: 45%;
+    `)}
+`;
+
 export const CardTitle = styled.div`
   display: flex;
 
