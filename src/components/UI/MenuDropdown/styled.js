@@ -13,7 +13,7 @@ export const MenuItem = styled.div`
   cursor: pointer;
 
   svg {
-    padding-right: ${props => props.theme.spacing(1)};
+    margin-right: ${props => props.theme.spacing(1.5)};
   }
 
   :hover {

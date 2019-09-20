@@ -29,9 +29,9 @@ const Header = ({ path, isDiffView, setIsDiffView, onCommitClick }) => (
       <MenuDropdown
         menuItems={[
           {
-            label: 'Change Branch',
+            label: isDiffView ? 'Editor View' : 'Diff View',
             icon: isDiffView ? (
-              <MarkDownIcon width="1.3em" height="1.3em" />
+              <MarkDownIcon width="1.5em" height="1.5em" />
             ) : (
               <DiffIcon width="1.3em" height="1.3em" />
             ),
@@ -41,7 +41,7 @@ const Header = ({ path, isDiffView, setIsDiffView, onCommitClick }) => (
           },
           {
             label: 'Commit',
-            icon: <CommitIcon height="1.3em" width="1.3em" />,
+            icon: <CommitIcon width="1.5em" height="1.5em" />,
             props: {
               onClick: onCommitClick,
             },

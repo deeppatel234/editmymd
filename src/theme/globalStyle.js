@@ -17,12 +17,8 @@ const GlobalStyle = createGlobalStyle`
 
   html {
     ${props =>
-      props.theme.breakpoints.lessThan(props.theme.breakpoints.md)(css`
-        font-size: 14px;
-      `)}
-    ${props =>
       props.theme.breakpoints.lessThan(props.theme.breakpoints.sm)(css`
-        font-size: 12px;
+        font-size: 14px;
       `)}
   }
 

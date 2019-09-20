@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const DropDownWrapper = styled.div`
   position: relative;
+  z-index: 800;
   display: inline-block;
 `;
 
