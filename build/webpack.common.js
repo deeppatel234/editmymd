@@ -2,6 +2,8 @@ require('dotenv').config();
 const webpack = require('webpack');
 const PATHS = require('./paths');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const { PUBLIC_DIR, DIST_DIR } = require('./paths');
 
 module.exports = {
   entry: {
@@ -50,5 +52,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'bundles/[name].[hash].css',
     }),
+    new CopyPlugin([
+      { from: `${PUBLIC_DIR}/assets`, to: `${DIST_DIR}/assets` },
+      { from: `${PUBLIC_DIR}/manifest.json`, to: DIST_DIR },
+      { from: `${PUBLIC_DIR}/favicon.ico`, to: DIST_DIR },
+    ]),
   ]
 };

@@ -3,7 +3,6 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const common = require('./webpack.common.js');
@@ -52,8 +51,5 @@ module.exports = merge(common, {
       algorithm: 'gzip',
       test: /\.js$|\.css$/,
     }),
-    new CopyPlugin([
-      { from: `${PUBLIC_DIR}/assets`, to: `${DIST_DIR}/assets` },
-    ]),
   ],
 });
