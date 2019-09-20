@@ -2,7 +2,7 @@
   "dir": "ltr",
   "lang": "en",
   "name": "ReadMD",
-  "display": "fullscreen",
+  "display": "standalone",
   "start_url": "/",
   "short_name": "ReadMD",
   "theme_color": "#24292E",
