@@ -41,7 +41,11 @@ const BranchModal = ({ onClose, repo, onBranchSelect, ...restProps }) => {
       onClose={onClose}
       {...restProps}
     >
-      <Input value={branch} onChange={onChangeMessage} />
+      <Input
+        aria-label="branch-name"
+        value={branch}
+        onChange={onChangeMessage}
+      />
     </Modal>
   );
 };

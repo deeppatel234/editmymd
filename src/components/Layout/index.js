@@ -17,7 +17,7 @@ const Layout = ({ user, children }) => (
         ReadMD
       </Typography>
       <UserProfile>
-        <Avatar image={user.profilePicture} />
+        <Avatar alt="profile-picture" image={user.profilePicture} />
         <Typography color="white">{user.name}</Typography>
       </UserProfile>
     </HeaderWrapper>

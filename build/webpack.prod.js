@@ -4,7 +4,6 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const common = require('./webpack.common.js');
@@ -56,6 +55,5 @@ module.exports = merge(common, {
     new CopyPlugin([
       { from: `${PUBLIC_DIR}/assets`, to: `${DIST_DIR}/assets` },
     ]),
-    new BundleAnalyzerPlugin(),
   ],
 });

@@ -80,7 +80,7 @@ const CommitModal = ({
       <CommitMessageWrapper>
         <Typography weight="bold">Commit Message</Typography>
         <CommitMessage>
-          <Avatar size={35} image={user.profilePicture} />
+          <Avatar alt="profile-picture" size={35} image={user.profilePicture} />
           <TextArea rows="5" value={message} onChange={onChangeMessage} />
         </CommitMessage>
       </CommitMessageWrapper>

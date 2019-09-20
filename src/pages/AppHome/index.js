@@ -59,6 +59,7 @@ const AppHome = () => {
       <AddRepositoryWrapper>
         <InputWrapper>
           <Input
+            aria-label="search"
             prefix={<SearchIcon />}
             wrapperProps={{ className: 'search-input' }}
             placeholder="Search Repository"
