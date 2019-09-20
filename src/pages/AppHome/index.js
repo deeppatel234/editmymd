@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import _range from 'lodash/range';
 
 import Empty from 'Components/Empty';
 import PageHeader from 'Components/PageHeader';
 import useDebounce from 'Components/useDebounce';
-import { Input, RepositoryIcon } from 'Components/UI';
+import { Input, RepositoryIcon, SearchIcon } from 'Components/UI';
 
 import Request from 'Services';
 
@@ -60,6 +59,7 @@ const AppHome = () => {
       <AddRepositoryWrapper>
         <InputWrapper>
           <Input
+            prefix={<SearchIcon />}
             wrapperProps={{ className: 'search-input' }}
             placeholder="Search Repository"
             onChange={e => setSearchTerm(e.target.value)}
@@ -71,9 +71,11 @@ const AppHome = () => {
           </Empty>
         )}
         <RepositoryCardWrapper>
-          {isLoading
-            ? _range(6).map(() => <RepositoryCard.Loader />)
-            : repoList.map(repo => <RepositoryCard key={repo.id} {...repo} />)}
+          {isLoading ? (
+            <RepositoryCard.Loader />
+          ) : (
+            repoList.map(repo => <RepositoryCard key={repo.id} {...repo} />)
+          )}
         </RepositoryCardWrapper>
       </AddRepositoryWrapper>
     </>

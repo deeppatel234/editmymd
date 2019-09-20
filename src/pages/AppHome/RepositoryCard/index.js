@@ -1,6 +1,7 @@
 import React from 'react';
+import _range from 'lodash/range';
 
-import ContentLoader from 'Components/ContentLoader';
+import { CardLoader } from 'Components/ContentLoader';
 import {
   RepositoryIcon,
   LockIcon,
@@ -47,12 +48,11 @@ const RepositoryCard = ({
   );
 };
 
-RepositoryCard.Loader = () => (
-  <RepoLoadingCard>
-    <ContentLoader height={65}>
-      <rect x="0" y="0" rx="4" ry="4" width="400" height="65" />
-    </ContentLoader>
-  </RepoLoadingCard>
-);
+RepositoryCard.Loader = () =>
+  _range(6).map(id => (
+    <RepoLoadingCard key={id}>
+      <CardLoader />
+    </RepoLoadingCard>
+  ));
 
 export default RepositoryCard;

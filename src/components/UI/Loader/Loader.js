@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { BarLoader, CircleLoader } from '../Icons';
+import { BarLoaderIcon, CircleLoaderIcon } from '../Icons';
 
 const LOADER_TYPE = {
-  bar: BarLoader,
-  circle: CircleLoader,
+  bar: BarLoaderIcon,
+  circle: CircleLoaderIcon,
 };
 
 const Loader = ({ type, size, ...restProps }) => {

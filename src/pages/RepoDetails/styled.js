@@ -9,10 +9,6 @@ export const RepoDetailsWrapper = styled.div`
   padding: ${props => props.theme.spacing(2)};
 `;
 
-export const RepoControl = styled.div`
-  padding: ${props => props.theme.spacing(2, 0)};
-`;
-
 export const PathList = styled.ul`
   width: 100%;
   margin: 0;
