@@ -2,21 +2,15 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Auth from 'Components/Auth';
-import Layout from 'Components/Layout';
 import AppLoading from 'Components/AppLoading';
-import Homepage from 'Pages/HomePage';
 import OAuth from 'Pages/OAuth';
-import AppHome from 'Pages/AppHome';
-import Editor from 'Pages/Editor';
-import RepoDetails from 'Pages/RepoDetails';
 
-const AppRoutes = () => (
+const AppRoute = React.lazy(() => import('./appRoutes'));
+const Homepage = React.lazy(() => import('Pages/HomePage'));
+
+const LoadApp = () => (
   <Auth fallback={Homepage}>
-    <Layout>
-      <Route path="/editor" component={Editor} />
-      <Route exact path="/repo/:repository" component={RepoDetails} />
-      <Route exact path="/" component={AppHome} />
-    </Layout>
+    <AppRoute />
   </Auth>
 );
 
@@ -25,7 +19,7 @@ const App = () => (
     <BrowserRouter>
       <Switch>
         <Route path="/oauth/:token" component={OAuth} />
-        <Route path="/" component={AppRoutes} />
+        <Route path="/" component={LoadApp} />
       </Switch>
     </BrowserRouter>
   </React.Suspense>

@@ -8,11 +8,6 @@ import reducers from './state';
 const PROD = NODE_ENV === 'production';
 const middlewares = [thunk];
 
-if (!PROD) {
-  const logger = require('redux-logger');
-  middlewares.push(logger.createLogger());
-}
-
 const composeEnhancers =
   (!PROD && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 

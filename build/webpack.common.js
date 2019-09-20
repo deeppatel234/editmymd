@@ -1,6 +1,7 @@
 require('dotenv').config();
 const webpack = require('webpack');
 const PATHS = require('./paths');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
@@ -22,7 +23,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.svg$/,
@@ -45,6 +46,9 @@ module.exports = {
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       GITHUB_CLIENT_KEY: JSON.stringify(process.env.GITHUB_CLIENT_KEY),
-    })
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'bundles/[name].[hash].css',
+    }),
   ]
 };
