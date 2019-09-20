@@ -7,14 +7,74 @@ import 'codemirror/mode/gfm/gfm';
 import 'codemirror/lib/codemirror.css';
 import 'highlight.js/styles/github-gist.css';
 
+import MediaQuery from 'Components/MediaQuery';
 import PageHeader from 'Components/PageHeader';
 import DiffView from 'Components/DiffView';
 import CommitModal from 'Components/CommitModal';
-import { Button, DiffIcon, MarkDownIcon, CommitIcon } from 'Components/UI';
+import {
+  Button,
+  DiffIcon,
+  MarkDownIcon,
+  CommitIcon,
+  MenuDropdown,
+} from 'Components/UI';
 
 import Request from 'Services';
 
 import { EditorWrapper } from './styled';
+
+const Header = ({ path, isDiffView, setIsDiffView, onCommitClick }) => (
+  <PageHeader title={path}>
+    <MediaQuery lessThan="sm">
+      <MenuDropdown
+        menuItems={[
+          {
+            label: 'Change Branch',
+            icon: isDiffView ? (
+              <MarkDownIcon width="1.3em" height="1.3em" />
+            ) : (
+              <DiffIcon width="1.3em" height="1.3em" />
+            ),
+            props: {
+              onClick: () => setIsDiffView(!isDiffView),
+            },
+          },
+          {
+            label: 'Commit',
+            icon: <CommitIcon height="1.3em" width="1.3em" />,
+            props: {
+              onClick: onCommitClick,
+            },
+          },
+        ]}
+      />
+    </MediaQuery>
+    <MediaQuery greaterThan="sm">
+      <PageHeader.Buttons>
+        <Button
+          color="primary"
+          icon={
+            isDiffView ? (
+              <MarkDownIcon width="1.5em" height="1.5em" />
+            ) : (
+              <DiffIcon width="1.3em" height="1.3em" />
+            )
+          }
+          onClick={() => setIsDiffView(!isDiffView)}
+        >
+          {isDiffView ? 'Editor View' : 'Diff View'}
+        </Button>
+        <Button
+          color="primary"
+          icon={<CommitIcon width="1.5em" height="1.5em" />}
+          onClick={onCommitClick}
+        >
+          Commit
+        </Button>
+      </PageHeader.Buttons>
+    </MediaQuery>
+  </PageHeader>
+);
 
 const EditorPage = ({ history, location }) => {
   const [content, setContent] = useState('');
@@ -78,24 +138,12 @@ const EditorPage = ({ history, location }) => {
 
   return (
     <>
-      <PageHeader title={path}>
-        <PageHeader.Buttons>
-          <Button color="primary" onClick={() => setIsDiffView(!isDiffView)}>
-            {isDiffView ? (
-              <>
-                <MarkDownIcon width="1.5em" height="1.5em" /> Editor View
-              </>
-            ) : (
-              <>
-                <DiffIcon width="1.3em" height="1.3em" /> Diff View
-              </>
-            )}
-          </Button>
-          <Button color="primary" onClick={onCommitClick}>
-            <CommitIcon width="1.5em" height="1.5em" /> Commit
-          </Button>
-        </PageHeader.Buttons>
-      </PageHeader>
+      <Header
+        path={path}
+        isDiffView={isDiffView}
+        setIsDiffView={setIsDiffView}
+        onCommitClick={onCommitClick}
+      />
       <CommitModal
         onClose={onCloseCommitModal}
         visible={showCommitModal}

@@ -7,19 +7,69 @@ import PageHeader from 'Components/PageHeader';
 import CreateFileModal from 'Components/CreateFileModal';
 import BranchModal from 'Components/BranchModal';
 import { CardLoader } from 'Components/ContentLoader';
+import MediaQuery from 'Components/MediaQuery';
 import {
   RepositoryIcon,
   Button,
   BookIcon,
   FileIcon,
-  MarkDownIcon,
   Typography,
   BranchIcon,
+  MenuDropdown,
 } from 'Components/UI';
 
 import Request from 'Services';
 
 import { RepoDetailsWrapper, PathList, PathListChild } from './styled';
+
+const Header = ({ repository, onClickSelectBranch, onCreateFileClick }) => (
+  <PageHeader
+    title={
+      <>
+        <RepositoryIcon /> {repository}
+      </>
+    }
+  >
+    <MediaQuery lessThan="sm">
+      <MenuDropdown
+        menuItems={[
+          {
+            label: 'Change Branch',
+            icon: <BranchIcon height="1.3em" width="1.3em" />,
+            props: {
+              onClick: onClickSelectBranch,
+            },
+          },
+          {
+            label: 'Create New File',
+            icon: <FileIcon height="1.3em" width="1.3em" />,
+            props: {
+              onClick: onCreateFileClick,
+            },
+          },
+        ]}
+      />
+    </MediaQuery>
+    <MediaQuery greaterThan="sm">
+      <PageHeader.Buttons>
+        <Button
+          icon={<BranchIcon height="1.3em" width="1.3em" />}
+          color="primary"
+          onClick={onClickSelectBranch}
+        >
+          Change Branch
+        </Button>
+        <Button
+          icon={<FileIcon height="1.3em" width="1.3em" />}
+          color="primary"
+          onClick={onCreateFileClick}
+        >
+          Create New File
+        </Button>
+      </PageHeader.Buttons>
+    </MediaQuery>
+  </PageHeader>
+);
 
 const RepoDetails = ({ match, history, location }) => {
   const { repository } = match.params;
@@ -80,24 +130,11 @@ const RepoDetails = ({ match, history, location }) => {
 
   return (
     <>
-      <PageHeader
-        title={
-          <>
-            <RepositoryIcon /> {repository}
-          </>
-        }
-      >
-        <PageHeader.Buttons>
-          <Button color="primary" onClick={onClickSelectBranch}>
-            <BranchIcon height="1.3em" width="1.3em" />
-            Change Branch
-          </Button>
-          <Button color="primary" onClick={onCreateFileClick}>
-            <MarkDownIcon />
-            Create New File
-          </Button>
-        </PageHeader.Buttons>
-      </PageHeader>
+      <Header
+        repository={repository}
+        onClickSelectBranch={onClickSelectBranch}
+        onCreateFileClick={onCreateFileClick}
+      />
       <CreateFileModal
         onClose={onCloseCreateFileModal}
         visible={showCreateFileModal}

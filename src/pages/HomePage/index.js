@@ -12,16 +12,25 @@ import {
   HomePageImage,
 } from './styled';
 
+const GithubButton = ({ string }) => (
+  <Button
+    as="a"
+    icon={<GithubIcon width="1.5em" height="1.5em" />}
+    href={config.githubURL}
+    size="small"
+    color="primary"
+  >
+    {string}
+  </Button>
+);
+
 const HomePage = () => (
   <HomePageWrapper>
     <Header>
       <Typography variant="h5" color="white">
         ReadMD
       </Typography>
-      <Button as="a" href={config.githubURL} size="small" color="primary">
-        <GithubIcon width="1.5em" height="1.5em" />
-        Login With GitHub
-      </Button>
+      <GithubButton string="Login With GitHub" />
     </Header>
     <Body>
       <BodyContent>
@@ -29,10 +38,7 @@ const HomePage = () => (
         <Typography variant="h6" color="subText">
           With ReadMD you can manage your all READMD files
         </Typography>
-        <Button as="a" href={config.githubURL} color="primary">
-          <GithubIcon width="1.5em" height="1.5em" />
-          Sign up With GitHub
-        </Button>
+        <GithubButton string="Sign up With GitHub" />
       </BodyContent>
       <BodyContent>
         <HomePageImage src="/assets/homepage-vector.svg" />

@@ -74,7 +74,7 @@ export const ButtonElement = styled.button`
       }
     `}
 
-  svg {
-    margin-right: 7px;
+  svg + span {
+    margin-left: ${props => props.theme.spacing(1)};
   }
 `;
