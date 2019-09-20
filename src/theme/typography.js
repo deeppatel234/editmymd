@@ -52,6 +52,12 @@ export default {
     fontWeight: FontWeight.REGULAR,
     fontFamily: FontFamily,
   },
+  body2: {
+    fontSize: pxToRem(16),
+    lineHeight: 1.5,
+    fontWeight: FontWeight.REGULAR,
+    fontFamily: FontFamily,
+  },
   body: {
     fontSize: pxToRem(14),
     lineHeight: 1.5,

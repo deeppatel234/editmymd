@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
+import 'Utilities/serviceWorker';
+
 import spacingFactor from 'Utilities/spacingFactor';
 import App from './app';
 import reduxStore from './store';

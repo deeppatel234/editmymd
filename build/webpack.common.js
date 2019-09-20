@@ -56,6 +56,7 @@ module.exports = {
       { from: `${PUBLIC_DIR}/assets`, to: `${DIST_DIR}/assets` },
       { from: `${PUBLIC_DIR}/manifest.json`, to: DIST_DIR },
       { from: `${PUBLIC_DIR}/favicon.ico`, to: DIST_DIR },
+      { from: `${PUBLIC_DIR}/sw.js`, to: DIST_DIR },
     ]),
   ]
 };
