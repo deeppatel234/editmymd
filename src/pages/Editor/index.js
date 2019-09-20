@@ -7,6 +7,7 @@ import 'codemirror/mode/gfm/gfm';
 import 'codemirror/lib/codemirror.css';
 import 'highlight.js/styles/github-gist.css';
 
+import ContentLoader from 'react-content-loader';
 import MediaQuery from 'Components/MediaQuery';
 import PageHeader from 'Components/PageHeader';
 import DiffView from 'Components/DiffView';
@@ -21,58 +22,68 @@ import {
 
 import Request from 'Services';
 
-import { EditorWrapper } from './styled';
+import { EditorWrapper, LoaderWrapper } from './styled';
 
-const Header = ({ path, isDiffView, setIsDiffView, onCommitClick }) => (
+const Header = ({
+  path,
+  isDiffView,
+  setIsDiffView,
+  onCommitClick,
+  isLoading,
+}) => (
   <PageHeader title={path}>
-    <MediaQuery lessThan="sm">
-      <MenuDropdown
-        menuItems={[
-          {
-            label: isDiffView ? 'Editor View' : 'Diff View',
-            icon: isDiffView ? (
-              <MarkDownIcon width="1.5em" height="1.5em" />
-            ) : (
-              <DiffIcon width="1.3em" height="1.3em" />
-            ),
-            props: {
-              onClick: () => setIsDiffView(!isDiffView),
-            },
-          },
-          {
-            label: 'Commit',
-            icon: <CommitIcon width="1.5em" height="1.5em" />,
-            props: {
-              onClick: onCommitClick,
-            },
-          },
-        ]}
-      />
-    </MediaQuery>
-    <MediaQuery greaterThan="sm">
-      <PageHeader.Buttons>
-        <Button
-          color="primary"
-          icon={
-            isDiffView ? (
-              <MarkDownIcon width="1.5em" height="1.5em" />
-            ) : (
-              <DiffIcon width="1.3em" height="1.3em" />
-            )
-          }
-          onClick={() => setIsDiffView(!isDiffView)}
-        >
-          {isDiffView ? 'Editor View' : 'Diff View'}
-        </Button>
-        <Button
-          color="primary"
-          icon={<CommitIcon width="1.5em" height="1.5em" />}
-          onClick={onCommitClick}
-        >
-          Commit
-        </Button>
-      </PageHeader.Buttons>
-    </MediaQuery>
+    {!isLoading && (
+      <>
+        <MediaQuery lessThan="sm">
+          <MenuDropdown
+            menuItems={[
+              {
+                label: isDiffView ? 'Editor View' : 'Diff View',
+                icon: isDiffView ? (
+                  <MarkDownIcon width="1.5em" height="1.5em" />
+                ) : (
+                  <DiffIcon width="1.3em" height="1.3em" />
+                ),
+                props: {
+                  onClick: () => setIsDiffView(!isDiffView),
+                },
+              },
+              {
+                label: 'Commit',
+                icon: <CommitIcon width="1.5em" height="1.5em" />,
+                props: {
+                  onClick: onCommitClick,
+                },
+              },
+            ]}
+          />
+        </MediaQuery>
+        <MediaQuery greaterThan="sm">
+          <PageHeader.Buttons>
+            <Button
+              color="primary"
+              icon={
+                isDiffView ? (
+                  <MarkDownIcon width="1.5em" height="1.5em" />
+                ) : (
+                  <DiffIcon width="1.3em" height="1.3em" />
+                )
+              }
+              onClick={() => setIsDiffView(!isDiffView)}
+            >
+              {isDiffView ? 'Editor View' : 'Diff View'}
+            </Button>
+            <Button
+              color="primary"
+              icon={<CommitIcon width="1.5em" height="1.5em" />}
+              onClick={onCommitClick}
+            >
+              Commit
+            </Button>
+          </PageHeader.Buttons>
+        </MediaQuery>
+      </>
+    )}
   </PageHeader>
 );
 
@@ -132,10 +143,6 @@ const EditorPage = ({ history, location }) => {
     }
   };
 
-  if (isLoading) {
-    return null;
-  }
-
   return (
     <>
       <Header
@@ -143,6 +150,7 @@ const EditorPage = ({ history, location }) => {
         isDiffView={isDiffView}
         setIsDiffView={setIsDiffView}
         onCommitClick={onCommitClick}
+        isLoading={isLoading}
       />
       <CommitModal
         onClose={onCloseCommitModal}
@@ -154,24 +162,35 @@ const EditorPage = ({ history, location }) => {
         sha={fileData.sha}
         onCommit={onCommit}
       />
-      <EditorWrapper>
-        {isDiffView ? (
-          <DiffView
-            value={content}
-            originalValue={masterContent}
-            onChange={onChangeDiffView}
-          />
-        ) : (
-          <MDEditor
-            defaultValue={content}
-            onChange={onChangeEditorValue}
-            parserOptions={{
-              breaks: false,
-              highlight: code => hljs.highlightAuto(code).value,
-            }}
-          />
-        )}
-      </EditorWrapper>
+      {isLoading ? (
+        <LoaderWrapper>
+          <ContentLoader width={20} height={100}>
+            <rect x="0" y="0" rx="0" ry="0" width="20" height="100" />
+          </ContentLoader>
+          <ContentLoader width={20} height={100}>
+            <rect x="0" y="0" rx="0" ry="0" width="20" height="100" />
+          </ContentLoader>
+        </LoaderWrapper>
+      ) : (
+        <EditorWrapper>
+          {isDiffView ? (
+            <DiffView
+              value={content}
+              originalValue={masterContent}
+              onChange={onChangeDiffView}
+            />
+          ) : (
+            <MDEditor
+              defaultValue={content}
+              onChange={onChangeEditorValue}
+              parserOptions={{
+                breaks: false,
+                highlight: code => hljs.highlightAuto(code).value,
+              }}
+            />
+          )}
+        </EditorWrapper>
+      )}
     </>
   );
 };
