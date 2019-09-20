@@ -41,7 +41,7 @@ const HomePage = () => (
         <GithubButton string="Sign up With GitHub" />
       </BodyContent>
       <BodyContent>
-        <HomePageImage src="/assets/homepage-vector.svg" />
+        <HomePageImage alt="homepage-image" src="/assets/homepage-vector.svg" />
       </BodyContent>
     </Body>
     <Footer>
