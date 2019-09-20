@@ -10,15 +10,6 @@ const app = express();
 // Set Server Port
 app.set('port', config.port);
 
-// redirect all http request to https
-app.use((req, res, next) => {
-  if (req.secure) {
-    next();
-  } else {
-    res.redirect(`https://${req.headers.host}${req.url}`);
-  }
-});
-
 // Init Express Middlewares
 app.use(logger('dev'));
 app.use(express.json());
