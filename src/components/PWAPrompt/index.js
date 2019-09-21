@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Typography, CloseIcon } from 'Components/UI';
+import MediaQuery from 'Components/MediaQuery';
 
 import { pwaPrompt } from 'Utilities/serviceWorker';
 
@@ -43,6 +44,8 @@ const PWAPrompt = () => {
   );
 };
 
-export default () => {
-  return localStorage.getItem('pp') !== 'false' ? <PWAPrompt /> : null;
-};
+export default () => (
+  <MediaQuery lessThan="sm">
+    {localStorage.getItem('pp') !== 'false' ? <PWAPrompt /> : null}
+  </MediaQuery>
+);
