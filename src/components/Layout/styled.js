@@ -27,8 +27,13 @@ export const BodyWrapper = styled.div`
 export const UserProfile = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   img {
     margin-right: ${props => props.theme.spacing(1)};
+  }
+
+  svg {
+    margin-left: ${props => props.theme.spacing(1)};
   }
 `;

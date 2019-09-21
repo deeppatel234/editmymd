@@ -17,3 +17,5 @@ export { default as CircleLoaderIcon } from './CircleLoader';
 export { default as SearchIcon } from './Search';
 export { default as BranchIcon } from './Branch';
 export { default as BarIcon } from './Bar';
+export { default as SignOutIcon } from './SignOut';
+export { default as ChevronDownIcon } from './ChevronDown';

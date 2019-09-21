@@ -8,8 +8,8 @@ import RepoDetails from 'Pages/RepoDetails';
 
 const Editor = React.lazy(() => import('Pages/Editor'));
 
-const AppRoutes = () => (
-  <Layout>
+const AppRoutes = ({ history }) => (
+  <Layout history={history}>
     <Route path="/editor" component={Editor} />
     <Route exact path="/repo/:repository" component={RepoDetails} />
     <Route exact path="/" component={AppHome} />

@@ -26,4 +26,6 @@ const MenuDropDown = ({ menuItems }) => (
   </BaseDropDown>
 );
 
+MenuDropDown.DropDown = DropDown;
+
 export default MenuDropDown;
