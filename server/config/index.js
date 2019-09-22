@@ -35,4 +35,12 @@ module.exports = {
     clientId: process.env.GITHUB_CLIENT_KEY,
     clientSecret: process.env.GITHUB_SECRET_KEY,
   },
+
+  /**
+   * GitHub OAuth
+   */
+  gitlab: {
+    clientId: process.env.GITLAB_CLIENT_KEY,
+    clientSecret: process.env.GITLAB_SECRET_KEY,
+  },
 };

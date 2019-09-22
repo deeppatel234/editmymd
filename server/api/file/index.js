@@ -8,6 +8,7 @@ router.get(
   '/',
   celebrate({
     query: {
+      id: Joi.number(),
       repo: Joi.string().required(),
       path: Joi.string().required(),
       branch: Joi.string().required(),
@@ -15,7 +16,7 @@ router.get(
   }),
   async (req, res) => {
     const { type, accessToken, userId } = req.user;
-    const { repo, path, branch } = req.query;
+    const { repo, path, branch, id } = req.query;
 
     try {
       res.json(
@@ -23,6 +24,7 @@ router.get(
           repo,
           path,
           branch,
+          id,
           owner: userId,
         }),
       );
@@ -38,16 +40,27 @@ router.put(
   '/commit',
   celebrate({
     body: {
+      id: Joi.number(),
       repo: Joi.string().required(),
       path: Joi.string().required(),
       branch: Joi.string().required(),
       message: Joi.string().required(),
       content: Joi.string().required(),
       sha: Joi.string(),
+      isNewFile: Joi.boolean(),
     },
   }),
   async (req, res) => {
-    const { repo, path, branch, message, content, sha } = req.body;
+    const {
+      repo,
+      path,
+      branch,
+      message,
+      content,
+      sha,
+      id,
+      isNewFile,
+    } = req.body;
     const { type, accessToken, userId } = req.user;
 
     try {
@@ -60,6 +73,8 @@ router.put(
           message,
           content,
           sha,
+          id,
+          isNewFile,
         }),
       );
     } catch (err) {

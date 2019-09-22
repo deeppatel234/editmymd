@@ -35,13 +35,14 @@ router.get(
   '/info',
   celebrate({
     query: {
+      id: Joi.number(),
       repo: Joi.string().required(),
       branch: Joi.string().required(),
     },
   }),
   async (req, res) => {
     const { accessToken, type, userId } = req.user;
-    const { repo, branch } = req.query;
+    const { repo, branch, id } = req.query;
 
     try {
       res.json(
@@ -49,6 +50,7 @@ router.get(
           owner: userId,
           repo,
           branch,
+          id,
         }),
       );
     } catch (err) {
@@ -63,6 +65,7 @@ router.get(
   '/tree',
   celebrate({
     query: {
+      id: Joi.number(),
       branch: Joi.string().required(),
       repo: Joi.string().required(),
       sha: Joi.string(),
@@ -70,7 +73,7 @@ router.get(
   }),
   async (req, res) => {
     const { accessToken, type, userId } = req.user;
-    const { branch, repo, sha } = req.query;
+    const { branch, repo, sha, id } = req.query;
 
     try {
       res.json(
@@ -79,6 +82,7 @@ router.get(
           repo,
           branch,
           sha,
+          id,
         }),
       );
     } catch (err) {
