@@ -14,6 +14,7 @@ const slideIn = keyframes`
 export const PWAPromptWrapper = styled.div`
   position: absolute;
   bottom: 0;
+  z-index: 800;
   display: flex;
   align-items: center;
   justify-content: space-between;

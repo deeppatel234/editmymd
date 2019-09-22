@@ -24,6 +24,12 @@ const GithubButton = ({ string }) => (
   </Button>
 );
 
+const GitLabButton = ({ string }) => (
+  <Button as="a" href={config.gitlabURL} size="small" color="primary">
+    {string}
+  </Button>
+);
+
 const HomePage = () => (
   <HomePageWrapper>
     <Header>
@@ -39,6 +45,7 @@ const HomePage = () => (
           With ReadMD you can manage your all READMD files
         </Typography>
         <GithubButton string="Sign up With GitHub" />
+        <GitLabButton string="Sign up With GitLab" />
       </BodyContent>
       <BodyContent>
         <HomePageImage alt="homepage-image" src="/assets/homepage-vector.svg" />

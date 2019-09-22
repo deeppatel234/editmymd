@@ -73,7 +73,7 @@ const Header = ({ repository, onClickSelectBranch, onCreateFileClick }) => (
 
 const RepoDetails = ({ match, history, location }) => {
   const { repository } = match.params;
-  const { defaultBranch } = location.state;
+  const { defaultBranch, id } = location.state;
   const [paths, setPaths] = useState([]);
   const [branch, setBranch] = useState(defaultBranch);
   const [showCreateFileModal, setShowCreateFileModal] = useState(false);
@@ -86,6 +86,7 @@ const RepoDetails = ({ match, history, location }) => {
       url: '/branch/tree',
       params: {
         branch,
+        id,
         repo: repository,
       },
     }).then(path => {
@@ -110,6 +111,7 @@ const RepoDetails = ({ match, history, location }) => {
     onCloseCreateFileModal();
     history.push('/editor', {
       branch,
+      id,
       path: fileName,
       repo: repository,
       isNewFile: true,
@@ -144,6 +146,7 @@ const RepoDetails = ({ match, history, location }) => {
       <BranchModal
         onClose={onCloseBranchModal}
         visible={showBranchModal}
+        id={id}
         repo={repository}
         onBranchSelect={onBranchSelect}
       />
@@ -168,6 +171,7 @@ const RepoDetails = ({ match, history, location }) => {
                       state: {
                         branch,
                         path,
+                        id,
                         repo: repository,
                         isNewFile: false,
                       },

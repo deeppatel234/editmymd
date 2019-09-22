@@ -1,13 +1,11 @@
 const axios = require('axios');
 const config = require('../config');
 
-const GITHUB_API = 'https://api.github.com';
+const GITLAB_API = 'https://gitlab.com/api/v4';
 
 const URL = {
-  ACCESS_TOKEN: 'https://github.com/login/oauth/access_token', // POST
-  USER: `${GITHUB_API}/user`, // GET
-  REPOSITORY: `${GITHUB_API}/user/repos`, // GET
-  SEARCH_REPOSITORY: `${GITHUB_API}/search/repositories`, // GET
+  ACCESS_TOKEN: 'https://gitlab.com/oauth/token', // POST
+  USER: `${GITLAB_API}/user`, // GET
 };
 
 const apiRequest = (accessToken, params) => {
@@ -15,7 +13,7 @@ const apiRequest = (accessToken, params) => {
     method: 'get',
     headers: {
       Accept: 'application/json',
-      Authorization: `token ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
     ...params,
   };
@@ -32,8 +30,10 @@ const getAccessToken = async code => {
       },
       data: {
         code,
-        client_id: config.github.clientId,
-        client_secret: config.github.clientSecret,
+        client_id: config.gitlab.clientId,
+        client_secret: config.gitlab.clientSecret,
+        grant_type: 'authorization_code',
+        redirect_uri: 'http://localhost:3030/api/oauth_redirect',
       },
     });
     const { access_token: accessToken } = data;
@@ -46,10 +46,10 @@ const getAccessToken = async code => {
 
 const prepareGithubUserData = user => {
   return {
-    type: 'github',
+    type: 'gitlab',
     name: user.name,
     email: user.email,
-    userId: user.login,
+    userId: user.username,
     profilePicture: user.avatar_url,
     accountInfo: user,
   };
@@ -73,18 +73,18 @@ const prepareRepoData = repo => {
   return {
     id: repo.id,
     name: repo.name,
-    isPrivate: repo.private,
-    forkCount: repo.forks,
-    starCount: repo.stargazers_count,
+    isPrivate: repo.visibility === 'private',
+    forkCount: repo.forks_count,
+    starCount: repo.star_count,
     defaultBranch: repo.default_branch,
     description: repo.description,
   };
 };
 
-const getRepositories = async accessToken => {
+const getRepositories = async (accessToken, { username }) => {
   try {
     const { data } = await apiRequest(accessToken, {
-      url: URL.REPOSITORY,
+      url: `${GITLAB_API}/users/${username}/projects`,
     });
     return data.map(d => prepareRepoData(d));
   } catch (err) {
@@ -95,29 +95,26 @@ const getRepositories = async accessToken => {
 const searchRepositories = async (accessToken, { query, username }) => {
   try {
     const { data } = await apiRequest(accessToken, {
-      url: `${URL.SEARCH_REPOSITORY}?q=${query}+user:${username}`,
+      url: `${GITLAB_API}/users/${username}/projects`,
+      params: {
+        search: query,
+      },
     });
-    return data.items.map(d => prepareRepoData(d));
+    return data.map(d => prepareRepoData(d));
   } catch (err) {
-    throw new Error('Unable to fetch tree');
+    throw new Error('Unable to fetch repository');
   }
 };
 
-const listBranches = async (accessToken, { owner, repo }) => {
+const getMDFilePaths = async (accessToken, { branch, id }) => {
   try {
     const { data } = await apiRequest(accessToken, {
-      url: `${GITHUB_API}/repos/${owner}/${repo}/branches`,
-    });
-    return data.map(d => d.name);
-  } catch (err) {
-    throw new Error('Unable to fetch branch list');
-  }
-};
-
-const getBranchInfo = async (accessToken, { owner, repo, branch }) => {
-  try {
-    const { data } = await apiRequest(accessToken, {
-      url: `${GITHUB_API}/repos/${owner}/${repo}/branches/${branch}`,
+      url: `${GITLAB_API}/projects/${id}/repository/tree`,
+      params: {
+        recursive: true,
+        ref: branch,
+        per_page: 100,
+      },
     });
     return data;
   } catch (err) {
@@ -125,60 +122,34 @@ const getBranchInfo = async (accessToken, { owner, repo, branch }) => {
   }
 };
 
-const getBranchTree = async (accessToken, { owner, repo, treeHash }) => {
+const getBranchInfo = async (accessToken, { branch, id }) => {
   try {
     const { data } = await apiRequest(accessToken, {
-      url: `${GITHUB_API}/repos/${owner}/${repo}/git/trees/${treeHash}?recursive=1`,
+      url: `${GITLAB_API}/projects/${id}/repository/branches/${branch}`,
     });
     return data;
   } catch (err) {
-    throw new Error('Unable to fetch tree');
-  }
-};
-
-const getMDFilePaths = async (accessToken, { owner, branch, repo, sha }) => {
-  let treeHash = sha;
-  try {
-    if (!treeHash) {
-      const branchInfo = await getBranchInfo(accessToken, {
-        owner,
-        repo,
-        branch,
-      });
-      treeHash = branchInfo.commit.sha;
-      if (!branchInfo) {
-        throw new Error('branch not found');
-      }
-    }
-    const { tree } = await getBranchTree(accessToken, {
-      owner,
-      repo,
-      treeHash,
-    });
-
-    return tree.filter(t => t.path.endsWith('.md'));
-  } catch (err) {
-    throw new Error('Unable to fetch tree');
+    throw new Error('Unable to fetch branch');
   }
 };
 
 const prepareFileContentData = file => {
   return {
-    name: file.name,
+    name: file.file_name,
     content:
       file.content && Buffer.from(file.content, 'base64').toString('utf-8'),
-    path: file.path,
-    sha: file.sha,
-    fileURL: file.html_url,
+    path: file.file_path,
+    sha: file.content_sha256,
+    fileURL: null,
     size: file.size,
-    downloadULR: file.download_url,
+    downloadULR: null,
   };
 };
 
-const getFileContent = async (accessToken, { owner, repo, path, branch }) => {
+const getFileContent = async (accessToken, { path, branch, id }) => {
   try {
     const { data } = await apiRequest(accessToken, {
-      url: `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}?ref=${branch}`,
+      url: `${GITLAB_API}/projects/${id}/repository/files/${path}?ref=${branch}`,
     });
 
     return prepareFileContentData(data);
@@ -198,39 +169,43 @@ const prepareCommitData = data => {
 
 const commitFileContent = async (
   accessToken,
-  { owner, repo, path, branch, message, content, sha },
+  { path, branch, message, content, sha, id, isNewFile },
 ) => {
-  const base64Content = Buffer.from(content).toString('base64');
   try {
     const { data } = await apiRequest(accessToken, {
-      method: 'put',
-      url: `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`,
+      method: isNewFile ? 'post' : 'put',
+      url: `${GITLAB_API}/projects/${id}/repository/files/${path}`,
       data: {
-        message,
-        content: base64Content,
-        sha,
+        commit_message: message,
+        content,
         branch,
       },
     });
 
     return {
-      content: prepareFileContentData(data.content),
-      commit: prepareCommitData(data.commit),
+      content: {
+        path: data.file_path,
+        sha,
+        name: null,
+        size: null,
+        fileURL: null,
+        downloadULR: null,
+      },
+      commit: prepareCommitData({}),
     };
   } catch (err) {
+    console.log(err);
     throw new Error('Unable to commit file');
   }
 };
 
 module.exports = {
-  getBranchInfo,
   getAccessToken,
   getUser,
   getRepositories,
   searchRepositories,
-  listBranches,
-  getBranchTree,
   getMDFilePaths,
+  getBranchInfo,
   getFileContent,
   commitFileContent,
 };

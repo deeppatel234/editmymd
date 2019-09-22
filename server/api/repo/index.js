@@ -6,10 +6,14 @@ const { getService } = require('../../service');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const { accessToken, type } = req.user;
+  const { accessToken, type, userId } = req.user;
 
   try {
-    res.json(await getService(type, 'getRepositories')(accessToken));
+    res.json(
+      await getService(type, 'getRepositories')(accessToken, {
+        username: userId,
+      }),
+    );
   } catch (err) {
     res.status(500).json({
       message: 'Something went wrong',

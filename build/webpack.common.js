@@ -48,6 +48,7 @@ module.exports = {
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       GITHUB_CLIENT_KEY: JSON.stringify(process.env.GITHUB_CLIENT_KEY),
+      GITLAB_CLIENT_KEY: JSON.stringify(process.env.GITLAB_CLIENT_KEY),
     }),
     new MiniCssExtractPlugin({
       filename: 'bundles/[name].[hash].css',
