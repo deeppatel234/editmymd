@@ -54,6 +54,10 @@ export const BodyContent = styled.div`
     props.theme.breakpoints.lessThan(props.theme.breakpoints.sm)(css`
       width: 100%;
     `)}
+
+  a {
+    margin: ${props => props.theme.spacing(1)};
+  }
 `;
 
 export const HomePageImage = styled.img`

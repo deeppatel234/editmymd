@@ -14,6 +14,7 @@ const COLOR = {
   BLACK: 'black',
   DEFAULT: 'default',
   DARK: 'dark',
+  ORANGE: 'orange',
 };
 
 const grey = {
@@ -42,11 +43,13 @@ const colors = {
   [COLOR.WHITE]: '#fff',
   [COLOR.BLACK]: '#000',
   [COLOR.DARK]: '#24292E',
+  [COLOR.ORANGE]: '#FC6D27',
 };
 
 const contrastText = {
   [colors[COLOR.PRIMARY]]: colors[COLOR.WHITE],
   [colors[COLOR.SECONDARY]]: colors[COLOR.WHITE],
+  [colors[COLOR.ORANGE]]: colors[COLOR.WHITE],
 };
 
 const background = {

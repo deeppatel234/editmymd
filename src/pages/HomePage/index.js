@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Typography, Button, GithubIcon, HeartIcon } from 'Components/UI';
+import {
+  Typography,
+  Button,
+  GithubIcon,
+  HeartIcon,
+  GitLabIcon,
+} from 'Components/UI';
 import config from '../../config';
 
 import {
@@ -25,7 +31,13 @@ const GithubButton = ({ string }) => (
 );
 
 const GitLabButton = ({ string }) => (
-  <Button as="a" href={config.gitlabURL} size="small" color="primary">
+  <Button
+    as="a"
+    icon={<GitLabIcon width="1.5em" height="1.5em" />}
+    href={config.gitlabURL}
+    size="small"
+    color="orange"
+  >
     {string}
   </Button>
 );
@@ -36,7 +48,6 @@ const HomePage = () => (
       <Typography variant="h5" color="white">
         ReadMD
       </Typography>
-      <GithubButton string="Login With GitHub" />
     </Header>
     <Body>
       <BodyContent>
