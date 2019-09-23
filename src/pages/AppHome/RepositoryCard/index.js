@@ -18,13 +18,13 @@ const RepositoryCard = ({
   forkCount,
   starCount,
   defaultBranch,
-  id,
+  repoId,
 }) => {
   return (
     <RepoCard
       to={{
         pathname: `repo/${name}`,
-        state: { defaultBranch, id },
+        state: { defaultBranch, repoId },
       }}
     >
       <CardTitle>

@@ -94,7 +94,7 @@ const EditorPage = ({ history, location }) => {
   const [isDiffView, setIsDiffView] = useState(false);
   const [showCommitModal, setShowCommitModal] = useState(false);
   const [fileData, setFileData] = useState({});
-  const { branch, path, repo, id, isNewFile } = location.state;
+  const { branch, path, repo, repoId, isNewFile } = location.state;
 
   useEffect(() => {
     if (!isNewFile) {
@@ -103,8 +103,7 @@ const EditorPage = ({ history, location }) => {
         params: {
           branch,
           path,
-          repo,
-          id,
+          repoId,
         },
       }).then(({ content: fileContent, ...restFileData }) => {
         setMasterContent(fileContent);
@@ -158,8 +157,8 @@ const EditorPage = ({ history, location }) => {
         visible={showCommitModal}
         branch={branch}
         path={path}
+        repoId={repoId}
         repo={repo}
-        id={id}
         content={content}
         sha={fileData.sha}
         onCommit={onCommit}
