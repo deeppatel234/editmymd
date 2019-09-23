@@ -49,6 +49,7 @@ module.exports = {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       GITHUB_CLIENT_KEY: JSON.stringify(process.env.GITHUB_CLIENT_KEY),
       GITLAB_CLIENT_KEY: JSON.stringify(process.env.GITLAB_CLIENT_KEY),
+      GITLAB_REDIRECT_URI: JSON.stringify(process.env.GITLAB_REDIRECT_URI),
     }),
     new MiniCssExtractPlugin({
       filename: 'bundles/[name].[hash].css',
