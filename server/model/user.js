@@ -25,7 +25,10 @@ const userSaveOrUpdate = async user => {
   );
 };
 
-const getUser = id => User.findById(id);
+const getUser = async id => {
+  const u = await User.findById(id);
+  return u._doc;
+};
 
 module.exports = {
   getUser,
