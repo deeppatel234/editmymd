@@ -2,95 +2,60 @@ const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 
 const { getService } = require('../../service');
+const { asyncError } = require('../../utils');
 
 const router = express.Router();
-
-router.get(
-  '/',
-  celebrate({
-    query: {
-      repo: Joi.string().required(),
-    },
-  }),
-  async (req, res) => {
-    const { accessToken, type, userId } = req.user;
-    const { repo } = req.query;
-
-    try {
-      res.json(
-        await getService(type, 'listBranches')(accessToken, {
-          owner: userId,
-          repo,
-        }),
-      );
-    } catch (err) {
-      res.status(500).json({
-        message: 'Something went wrong',
-      });
-    }
-  },
-);
 
 router.get(
   '/info',
   celebrate({
     query: {
-      id: Joi.number(),
-      repo: Joi.string().required(),
+      repoId: Joi.string().required(),
       branch: Joi.string().required(),
     },
   }),
-  async (req, res) => {
-    const { accessToken, type, userId } = req.user;
-    const { repo, branch, id } = req.query;
+  asyncError(
+    async (req, res) => {
+      const { type, ...userInfo } = req.user;
+      const { repoId, branch } = req.query;
 
-    try {
       res.json(
-        await getService(type, 'getBranchInfo')(accessToken, {
-          owner: userId,
-          repo,
+        await getService(type, 'branchInfo')(userInfo, {
+          repoId,
           branch,
-          id,
         }),
       );
-    } catch (err) {
-      res.status(500).json({
-        message: 'Something went wrong',
-      });
-    }
-  },
+    },
+    {
+      message: 'unable to get branch info',
+    },
+  ),
 );
 
 router.get(
   '/tree',
   celebrate({
     query: {
-      id: Joi.number(),
+      repoId: Joi.string().required(),
       branch: Joi.string().required(),
-      repo: Joi.string().required(),
-      sha: Joi.string(),
     },
   }),
-  async (req, res) => {
-    const { accessToken, type, userId } = req.user;
-    const { branch, repo, sha, id } = req.query;
+  asyncError(
+    async (req, res) => {
+      const { type, ...userInfo } = req.user;
+      const { branch, repoId } = req.query;
 
-    try {
       res.json(
-        await getService(type, 'getMDFilePaths')(accessToken, {
-          owner: userId,
-          repo,
+        await getService(type, 'branchTree')(userInfo, {
+          repoId,
           branch,
-          sha,
-          id,
         }),
       );
-    } catch (err) {
-      res.status(500).json({
-        message: 'Something went wrong',
-      });
-    }
-  },
+    },
+    {
+      message: 'unable to fetch file paths',
+    },
+  ),
 );
 
 module.exports = router;

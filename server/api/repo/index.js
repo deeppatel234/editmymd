@@ -2,24 +2,22 @@ const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 
 const { getService } = require('../../service');
+const { asyncError } = require('../../utils');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  const { accessToken, type, userId } = req.user;
-
-  try {
-    res.json(
-      await getService(type, 'getRepositories')(accessToken, {
-        username: userId,
-      }),
-    );
-  } catch (err) {
-    res.status(500).json({
-      message: 'Something went wrong',
-    });
-  }
-});
+router.get(
+  '/',
+  asyncError(
+    async (req, res) => {
+      const { type, ...userInfo } = req.user;
+      res.json(await getService(type, 'repositoriesList')(userInfo));
+    },
+    {
+      message: 'unable to fetch repositories',
+    },
+  ),
+);
 
 router.get(
   '/search',
@@ -28,23 +26,21 @@ router.get(
       query: Joi.string().required(),
     },
   }),
-  async (req, res) => {
-    const { accessToken, type, userId } = req.user;
-    const { query } = req.query;
+  asyncError(
+    async (req, res) => {
+      const { type, ...userInfo } = req.user;
+      const { query } = req.query;
 
-    try {
       res.json(
-        await getService(type, 'searchRepositories')(accessToken, {
+        await getService(type, 'searchRepositories')(userInfo, {
           query,
-          username: userId,
         }),
       );
-    } catch (err) {
-      res.status(500).json({
-        message: 'Something went wrong',
-      });
-    }
-  },
+    },
+    {
+      message: 'unable to search repositories',
+    },
+  ),
 );
 
 module.exports = router;

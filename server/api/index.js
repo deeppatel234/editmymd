@@ -1,7 +1,7 @@
 const express = require('express');
 const { errors } = require('celebrate');
 
-const { isAuth, attachCurrentUser } = require('./middlewares');
+const { isAuth, attachCurrentUser, errorHandler } = require('./middlewares');
 
 const router = express.Router();
 
@@ -21,5 +21,6 @@ router.use('/repo', repo);
 router.use('/branch', branch);
 router.use('/file', file);
 router.use(errors());
+router.use(errorHandler);
 
 module.exports = router;

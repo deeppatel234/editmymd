@@ -42,5 +42,6 @@ module.exports = {
   gitlab: {
     clientId: process.env.GITLAB_CLIENT_KEY,
     clientSecret: process.env.GITLAB_SECRET_KEY,
+    redirectURI: process.env.GITLAB_REDIRECT_URI,
   },
 };

@@ -3,6 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 
 const { userSaveOrUpdate } = require('../../model/user');
 const { getService, generateToken } = require('../../service');
+const { asyncError } = require('../../utils');
 
 const router = express.Router();
 
@@ -14,20 +15,21 @@ router.get(
       state: Joi.string().required(),
     },
   }),
-  async (req, res) => {
-    const { code, state } = req.query;
+  asyncError(
+    async (req, res) => {
+      const { code, state } = req.query;
 
-    try {
-      const accessToken = await getService(state, 'getAccessToken')(code);
-      const user = await getService(state, 'getUser')(accessToken);
+      const accessToken = await getService(state, 'generateAccessToken')(code);
+      const user = await getService(state, 'user')(accessToken);
       const { _id } = await userSaveOrUpdate(user);
       const token = generateToken(_id.toString());
 
       res.redirect(`/oauth/${token}`);
-    } catch (err) {
-      res.status(500).send('Something went wrong');
-    }
-  },
+    },
+    {
+      message: 'Something went wrong',
+    },
+  ),
 );
 
 module.exports = router;
