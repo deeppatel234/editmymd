@@ -15,7 +15,7 @@ const CommitModal = ({
   path,
   repo,
   sha,
-  id,
+  repoId,
   isNewFile,
   onCommit,
   ...restProps
@@ -25,17 +25,15 @@ const CommitModal = ({
 
   const onClickCommit = () => {
     setLoading(true);
-    debugger
     Request.apiPut({
       url: '/file/commit',
       data: {
         branch,
         path,
-        repo,
         message,
         sha,
         content,
-        id,
+        repoId: repoId.toString(),
         isNewFile,
       },
     }).then(res => {

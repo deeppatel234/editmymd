@@ -12,6 +12,7 @@ const user = data => {
 const repository = repo => {
   return {
     id: repo.id,
+    repoId: repo.id,
     name: repo.name,
     isPrivate: repo.visibility === 'private',
     forkCount: repo.forks_count,

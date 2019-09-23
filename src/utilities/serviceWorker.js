@@ -1,4 +1,4 @@
-if ('serviceWorker' in navigator) {
+if (NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(
       registration => {

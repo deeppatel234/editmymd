@@ -4,7 +4,7 @@ import { Modal, Typography, Input } from 'Components/UI';
 
 import Request from 'Services';
 
-const BranchModal = ({ onClose, id, repo, onBranchSelect, ...restProps }) => {
+const BranchModal = ({ onClose, repoId, onBranchSelect, ...restProps }) => {
   const [branch, setBranch] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -13,8 +13,7 @@ const BranchModal = ({ onClose, id, repo, onBranchSelect, ...restProps }) => {
     Request.apiGet({
       url: '/branch/info',
       params: {
-        id,
-        repo,
+        repoId,
         branch,
       },
     })
