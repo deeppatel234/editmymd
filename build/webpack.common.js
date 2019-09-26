@@ -4,6 +4,7 @@ const PATHS = require('./paths');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { PUBLIC_DIR, DIST_DIR } = require('./paths');
+const pkg = require('../package.json');
 
 module.exports = {
   entry: {
@@ -29,8 +30,8 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: 'svg-inline-loader'
-      }
+        loader: 'svg-inline-loader',
+      },
     ],
   },
   resolve: {
@@ -50,6 +51,7 @@ module.exports = {
       GITHUB_CLIENT_KEY: JSON.stringify(process.env.GITHUB_CLIENT_KEY),
       GITLAB_CLIENT_KEY: JSON.stringify(process.env.GITLAB_CLIENT_KEY),
       GITLAB_REDIRECT_URI: JSON.stringify(process.env.GITLAB_REDIRECT_URI),
+      PACKAGE_VERSION: JSON.stringify(pkg.version),
     }),
     new MiniCssExtractPlugin({
       filename: 'bundles/[name].[hash].css',
@@ -58,7 +60,12 @@ module.exports = {
       { from: `${PUBLIC_DIR}/assets`, to: `${DIST_DIR}/assets` },
       { from: `${PUBLIC_DIR}/manifest.json`, to: DIST_DIR },
       { from: `${PUBLIC_DIR}/favicon.ico`, to: DIST_DIR },
-      { from: `${PUBLIC_DIR}/sw.js`, to: DIST_DIR },
+      {
+        from: `${PUBLIC_DIR}/sw.js`,
+        to: DIST_DIR,
+        transform: content =>
+          content.toString().replace('PACKAGE_VERSION', pkg.version),
+      },
     ]),
-  ]
+  ],
 };
