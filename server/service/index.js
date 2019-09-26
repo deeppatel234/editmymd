@@ -1,6 +1,7 @@
 const github = require('./github');
 const gitlab = require('./gitlab');
 const token = require('./token');
+const sentry = require('./sentry');
 
 const SERVICE_TYPE = {
   GITHUB: 'github',
@@ -18,4 +19,5 @@ module.exports = {
   SERVICE_TYPE,
   getService,
   ...token,
+  sentry,
 };

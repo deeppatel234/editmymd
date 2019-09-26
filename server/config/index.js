@@ -44,4 +44,9 @@ module.exports = {
     clientSecret: process.env.GITLAB_SECRET_KEY,
     redirectURI: process.env.GITLAB_REDIRECT_URI,
   },
+
+  /**
+   * Error reporting service
+   */
+  sentryURL: process.env.SENTRY_DNS,
 };

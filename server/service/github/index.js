@@ -4,16 +4,28 @@ const formateData = require('./formateData');
 
 const GITHUB_API = 'https://api.github.com';
 
-const apiRequest = (accessToken, params) => {
-  const apiOptions = {
-    method: 'get',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `token ${accessToken}`,
-    },
-    ...params,
-  };
-  return axios(apiOptions);
+const apiRequest = async (accessToken, params) => {
+  try {
+    const apiOptions = {
+      method: 'get',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `token ${accessToken}`,
+      },
+      ...params,
+    };
+
+    const { data } = await axios(apiOptions);
+    return data;
+  } catch (err) {
+    throw new Error(
+      JSON.stringify({
+        message: err.message,
+        response: err.response.data,
+        params,
+      }),
+    );
+  }
 };
 
 const generateAccessToken = async code => {
@@ -33,7 +45,7 @@ const generateAccessToken = async code => {
 };
 
 const user = async accessToken => {
-  const { data } = await apiRequest(accessToken, {
+  const data = await apiRequest(accessToken, {
     url: `${GITHUB_API}/user`,
   });
   return {
@@ -43,31 +55,30 @@ const user = async accessToken => {
 };
 
 const repositoriesList = async ({ accessToken }) => {
-  const { data } = await apiRequest(accessToken, {
+  const data = await apiRequest(accessToken, {
     url: `${GITHUB_API}/user/repos`,
   });
   return data.map(formateData.repository);
 };
 
 const searchRepositories = async ({ accessToken, userId }, { query }) => {
-  const { data } = await apiRequest(accessToken, {
+  const data = await apiRequest(accessToken, {
     url: `${GITHUB_API}/search/repositories?q=${query}+user:${userId}`,
   });
   return data.items.map(formateData.repository);
 };
 
 const branchList = async ({ accessToken, userId }, { repoId }) => {
-  const { data } = await apiRequest(accessToken, {
+  const data = await apiRequest(accessToken, {
     url: `${GITHUB_API}/repos/${userId}/${repoId}/branches`,
   });
   return data.map(d => d.name);
 };
 
-const branchInfo = async ({ accessToken, userId }, { repoId, branch }) => {
-  const { data } = await apiRequest(accessToken, {
+const branchInfo = ({ accessToken, userId }, { repoId, branch }) => {
+  return apiRequest(accessToken, {
     url: `${GITHUB_API}/repos/${userId}/${repoId}/branches/${branch}`,
   });
-  return data;
 };
 
 const branchTree = async ({ accessToken, userId }, { repoId, branch }) => {
@@ -80,7 +91,7 @@ const branchTree = async ({ accessToken, userId }, { repoId, branch }) => {
     throw new Error('branch not found');
   }
 
-  const { data } = await apiRequest(accessToken, {
+  const data = await apiRequest(accessToken, {
     url: `${GITHUB_API}/repos/${userId}/${repoId}/git/trees/${branchData.commit.sha}?recursive=1`,
   });
   return data.tree.filter(t => t.path.endsWith('.md'));
@@ -90,7 +101,7 @@ const fileContent = async (
   { accessToken, userId },
   { repoId, path, branch },
 ) => {
-  const { data } = await apiRequest(accessToken, {
+  const data = await apiRequest(accessToken, {
     url: `${GITHUB_API}/repos/${userId}/${repoId}/contents/${path}?ref=${branch}`,
   });
   return formateData.fileContent(data);
@@ -101,7 +112,7 @@ const commitFileContent = async (
   { repoId, path, branch, message, content, sha },
 ) => {
   const base64Content = Buffer.from(content).toString('base64');
-  const { data } = await apiRequest(accessToken, {
+  const data = await apiRequest(accessToken, {
     method: 'put',
     url: `${GITHUB_API}/repos/${userId}/${repoId}/contents/${path}`,
     data: {
