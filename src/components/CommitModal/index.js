@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { Modal, Typography, TextArea, Avatar } from 'Components/UI';
 
-import Request from 'Services';
+import api from 'Services/api';
 
 import { CommitMessage, CommitTable, CommitMessageWrapper } from './styled';
 
@@ -25,23 +25,25 @@ const CommitModal = ({
 
   const onClickCommit = () => {
     setLoading(true);
-    Request.apiPut({
-      url: '/file/commit',
-      data: {
-        branch,
-        path,
-        message,
-        sha,
-        content,
-        repoId: repoId.toString(),
-        isNewFile,
-      },
-    }).then(res => {
-      setLoading(false);
-      onCommit(res);
-      onClose();
-      setMessage('');
-    });
+    api
+      .put({
+        url: '/file/commit',
+        data: {
+          branch,
+          path,
+          message,
+          sha,
+          content,
+          repoId: repoId.toString(),
+          isNewFile,
+        },
+      })
+      .then(res => {
+        setLoading(false);
+        onCommit(res);
+        onClose();
+        setMessage('');
+      });
   };
 
   const onChangeMessage = event => {

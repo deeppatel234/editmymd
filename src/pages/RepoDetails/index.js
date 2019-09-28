@@ -18,7 +18,7 @@ import {
   MenuDropdown,
 } from 'Components/UI';
 
-import Request from 'Services';
+import api from 'Services/api';
 
 import { RepoDetailsWrapper, PathList, PathListChild } from './styled';
 
@@ -82,16 +82,18 @@ const RepoDetails = ({ match, history, location }) => {
 
   const fetchFileTree = () => {
     setIsLoading(true);
-    Request.apiGet({
-      url: '/branch/tree',
-      params: {
-        branch,
-        repoId,
-      },
-    }).then(path => {
-      setPaths(path);
-      setIsLoading(false);
-    });
+    api
+      .get({
+        url: '/branch/tree',
+        params: {
+          branch,
+          repoId,
+        },
+      })
+      .then(path => {
+        setPaths(path);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {

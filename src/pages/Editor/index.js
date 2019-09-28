@@ -20,7 +20,7 @@ import {
   MenuDropdown,
 } from 'Components/UI';
 
-import Request from 'Services';
+import api from 'Services/api';
 
 import { EditorWrapper, LoaderWrapper } from './styled';
 
@@ -98,19 +98,21 @@ const EditorPage = ({ history, location }) => {
 
   useEffect(() => {
     if (!isNewFile) {
-      Request.apiGet({
-        url: '/file',
-        params: {
-          branch,
-          path,
-          repoId,
-        },
-      }).then(({ content: fileContent, ...restFileData }) => {
-        setMasterContent(fileContent);
-        setContent(fileContent);
-        setFileData(restFileData);
-        setIsLoading(false);
-      });
+      api
+        .get({
+          url: '/file',
+          params: {
+            branch,
+            path,
+            repoId,
+          },
+        })
+        .then(({ content: fileContent, ...restFileData }) => {
+          setMasterContent(fileContent);
+          setContent(fileContent);
+          setFileData(restFileData);
+          setIsLoading(false);
+        });
     } else {
       setIsLoading(false);
     }

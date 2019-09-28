@@ -1,4 +1,4 @@
-import Request from 'Services';
+import token from 'Services/token';
 import * as types from './types';
 
 const user = (state = {}, action) => {
@@ -7,7 +7,7 @@ const user = (state = {}, action) => {
       return action.user;
 
     case types.USERS_UNSET:
-      Request.resetToken();
+      token.reset();
       return {};
 
     default:

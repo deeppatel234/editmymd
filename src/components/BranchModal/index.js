@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Modal, Typography, Input } from 'Components/UI';
 
-import Request from 'Services';
+import api from 'Services/api';
 
 const BranchModal = ({ onClose, repoId, onBranchSelect, ...restProps }) => {
   const [branch, setBranch] = useState('');
@@ -10,13 +10,14 @@ const BranchModal = ({ onClose, repoId, onBranchSelect, ...restProps }) => {
 
   const onClickOkay = () => {
     setLoading(true);
-    Request.apiGet({
-      url: '/branch/info',
-      params: {
-        repoId,
-        branch,
-      },
-    })
+    api
+      .get({
+        url: '/branch/info',
+        params: {
+          repoId,
+          branch,
+        },
+      })
       .then(() => {
         setLoading(false);
         onBranchSelect(branch);

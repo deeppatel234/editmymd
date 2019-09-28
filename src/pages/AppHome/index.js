@@ -5,7 +5,7 @@ import PageHeader from 'Components/PageHeader';
 import useDebounce from 'Components/useDebounce';
 import { Input, RepositoryIcon, SearchIcon } from 'Components/UI';
 
-import Request from 'Services';
+import api from 'Services/api';
 
 import RepositoryCard from './RepositoryCard';
 
@@ -23,13 +23,15 @@ const AppHome = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 700);
 
   useEffect(() => {
-    Request.apiGet({
-      url: '/repo',
-    }).then(repo => {
-      setRepoList(repo);
-      setInitRepoList(repo);
-      setIsLoading(false);
-    });
+    api
+      .get({
+        url: '/repo',
+      })
+      .then(repo => {
+        setRepoList(repo);
+        setInitRepoList(repo);
+        setIsLoading(false);
+      });
   }, []);
 
   useEffect(() => {

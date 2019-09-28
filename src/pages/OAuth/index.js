@@ -1,14 +1,14 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import Request from 'Services';
+import tokenService from 'Services/token';
 
 const OAuth = ({ match }) => {
   const { params } = match;
   const { token } = params;
 
   if (token) {
-    Request.setToken(token);
+    tokenService.set(token);
   }
 
   return <Redirect to="/" />;

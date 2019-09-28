@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import AppLoading from 'Components/AppLoading';
-import Request from 'Services';
+import token from 'Services/token';
+import api from 'Services/api';
 import { actions } from 'State/user';
 
 const Auth = ({ fallback: FallBack, children, setUserData }) => {
@@ -15,10 +16,8 @@ const Auth = ({ fallback: FallBack, children, setUserData }) => {
   };
 
   useEffect(() => {
-    const token = Request.getToken();
-    if (token) {
-      Request.setToken(token);
-      Request.apiGet({
+    if (token.get()) {
+      api.get({
         url: '/user',
       })
         .then(res => {
