@@ -1,13 +1,12 @@
-import { APIError, UnauthorizedError } from 'Utilities/errors';
+import { APIError } from 'Utilities/errors';
+import { actions } from 'State/user';
+import store from '../store';
 import token from './token';
 
 const reqFilter = async request => {
   const resJson = await request.json();
   if (request.status >= 200 && request.status < 300) {
     return Promise.resolve(resJson);
-  }
-  if (request.status === 401) {
-    return Promise.reject(new UnauthorizedError(resJson.message));
   }
   return Promise.reject(
     new APIError(resJson.message, request.status, request.statusText),
@@ -19,7 +18,13 @@ const fetchAPI = (url, data) => {
     fetch(url, data)
       .then(reqFilter)
       .then(resolve)
-      .catch(rejects);
+      .catch(err => {
+        if (err.statusCode === 401) {
+          store.dispatch(actions.unsetUserData());
+          window.location.reload();
+        }
+        rejects(err);
+      });
   });
 };
 
