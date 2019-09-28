@@ -2,21 +2,16 @@ const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 
 const { getService } = require('../../service');
-const { asyncError } = require('../../utils');
+const { asyncError } = require('../../utils/errors');
 
 const router = express.Router();
 
 router.get(
   '/',
-  asyncError(
-    async (req, res) => {
-      const { type, ...userInfo } = req.user;
-      res.json(await getService(type, 'repositoriesList')(userInfo));
-    },
-    {
-      message: 'unable to fetch repositories',
-    },
-  ),
+  asyncError(async (req, res) => {
+    const { type, ...userInfo } = req.user;
+    res.json(await getService(type, 'repositoriesList')(userInfo));
+  }),
 );
 
 router.get(
@@ -26,21 +21,16 @@ router.get(
       query: Joi.string().required(),
     },
   }),
-  asyncError(
-    async (req, res) => {
-      const { type, ...userInfo } = req.user;
-      const { query } = req.query;
+  asyncError(async (req, res) => {
+    const { type, ...userInfo } = req.user;
+    const { query } = req.query;
 
-      res.json(
-        await getService(type, 'searchRepositories')(userInfo, {
-          query,
-        }),
-      );
-    },
-    {
-      message: 'unable to search repositories',
-    },
-  ),
+    res.json(
+      await getService(type, 'searchRepositories')(userInfo, {
+        query,
+      }),
+    );
+  }),
 );
 
 module.exports = router;

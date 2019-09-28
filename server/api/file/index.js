@@ -1,7 +1,7 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 const { getService } = require('../../service');
-const { asyncError } = require('../../utils');
+const { asyncError } = require('../../utils/errors');
 
 const router = express.Router();
 
@@ -14,23 +14,18 @@ router.get(
       branch: Joi.string().required(),
     },
   }),
-  asyncError(
-    async (req, res) => {
-      const { type, ...userInfo } = req.user;
-      const { path, branch, repoId } = req.query;
+  asyncError(async (req, res) => {
+    const { type, ...userInfo } = req.user;
+    const { path, branch, repoId } = req.query;
 
-      res.json(
-        await getService(type, 'fileContent')(userInfo, {
-          repoId,
-          path,
-          branch,
-        }),
-      );
-    },
-    {
-      message: 'unable to get file content',
-    },
-  ),
+    res.json(
+      await getService(type, 'fileContent')(userInfo, {
+        repoId,
+        path,
+        branch,
+      }),
+    );
+  }),
 );
 
 router.put(
@@ -46,10 +41,12 @@ router.put(
       sha: Joi.string(),
     },
   }),
-  asyncError(
-    async (req, res) => {
-      const { type, ...userInfo } = req.user;
-      const {
+  asyncError(async (req, res) => {
+    const { type, ...userInfo } = req.user;
+    const { repoId, path, branch, message, content, sha, isNewFile } = req.body;
+
+    res.json(
+      await getService(type, 'commitFileContent')(userInfo, {
         repoId,
         path,
         branch,
@@ -57,24 +54,9 @@ router.put(
         content,
         sha,
         isNewFile,
-      } = req.body;
-
-      res.json(
-        await getService(type, 'commitFileContent')(userInfo, {
-          repoId,
-          path,
-          branch,
-          message,
-          content,
-          sha,
-          isNewFile,
-        }),
-      );
-    },
-    {
-      message: 'unable to commit a file content',
-    },
-  ),
+      }),
+    );
+  }),
 );
 
 module.exports = router;
