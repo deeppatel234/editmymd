@@ -16,6 +16,7 @@ import {
   Typography,
   BranchIcon,
   MenuDropdown,
+  ErrorIcon,
 } from 'Components/UI';
 
 import api from 'Services/api';
@@ -78,6 +79,7 @@ const RepoDetails = ({ match, history, location }) => {
   const [branch, setBranch] = useState(defaultBranch);
   const [showCreateFileModal, setShowCreateFileModal] = useState(false);
   const [showBranchModal, setShowBranchModal] = useState(false);
+  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchFileTree = () => {
@@ -92,6 +94,10 @@ const RepoDetails = ({ match, history, location }) => {
       })
       .then(path => {
         setPaths(path);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setError('Unable to fetch markdown files');
         setIsLoading(false);
       });
   };
@@ -150,42 +156,50 @@ const RepoDetails = ({ match, history, location }) => {
         repoId={repoId}
         onBranchSelect={onBranchSelect}
       />
-      {!isLoading && !paths.length && (
-        <Empty message="No Markdown Files Found">
-          <BookIcon height="50" width="50" color="subText" />
+      {error ? (
+        <Empty message={error}>
+          <ErrorIcon height="150" width="150" />
         </Empty>
+      ) : (
+        <>
+          {!isLoading && !paths.length && (
+            <Empty message="No Markdown Files Found">
+              <BookIcon height="50" width="50" color="subText" />
+            </Empty>
+          )}
+          <RepoDetailsWrapper>
+            <PathList>
+              {isLoading
+                ? _range(6).map(id => (
+                    <PathListChild key={id}>
+                      <CardLoader height={20} />
+                    </PathListChild>
+                  ))
+                : paths.map(({ path }) => (
+                    <PathListChild key={path}>
+                      <Link
+                        to={{
+                          pathname: '/editor',
+                          state: {
+                            branch,
+                            path,
+                            repoId,
+                            repo: repository,
+                            isNewFile: false,
+                          },
+                        }}
+                      >
+                        <Typography>
+                          <FileIcon height="1.5em" width="1.5em" />
+                          {path}
+                        </Typography>
+                      </Link>
+                    </PathListChild>
+                  ))}
+            </PathList>
+          </RepoDetailsWrapper>
+        </>
       )}
-      <RepoDetailsWrapper>
-        <PathList>
-          {isLoading
-            ? _range(6).map(id => (
-                <PathListChild key={id}>
-                  <CardLoader height={20} />
-                </PathListChild>
-              ))
-            : paths.map(({ path }) => (
-                <PathListChild key={path}>
-                  <Link
-                    to={{
-                      pathname: '/editor',
-                      state: {
-                        branch,
-                        path,
-                        repoId,
-                        repo: repository,
-                        isNewFile: false,
-                      },
-                    }}
-                  >
-                    <Typography>
-                      <FileIcon height="1.5em" width="1.5em" />
-                      {path}
-                    </Typography>
-                  </Link>
-                </PathListChild>
-              ))}
-        </PathList>
-      </RepoDetailsWrapper>
     </>
   );
 };

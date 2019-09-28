@@ -36,7 +36,7 @@ const BranchModal = ({ onClose, repoId, onBranchSelect, ...restProps }) => {
     <Modal
       header={<Typography weight="bold">Select a branch</Typography>}
       footerProps={{
-        okProps: { loading, onClick: onClickOkay },
+        okProps: { disabled: !branch, loading, onClick: onClickOkay },
       }}
       onClose={onClose}
       {...restProps}

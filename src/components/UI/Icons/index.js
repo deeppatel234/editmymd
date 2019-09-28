@@ -20,3 +20,4 @@ export { default as BarIcon } from './Bar';
 export { default as SignOutIcon } from './SignOut';
 export { default as ChevronDownIcon } from './ChevronDown';
 export { default as GitLabIcon } from './GitLab';
+export { default as ErrorIcon } from './Error';

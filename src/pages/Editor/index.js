@@ -12,12 +12,14 @@ import MediaQuery from 'Components/MediaQuery';
 import PageHeader from 'Components/PageHeader';
 import DiffView from 'Components/DiffView';
 import CommitModal from 'Components/CommitModal';
+import Empty from 'Components/Empty';
 import {
   Button,
   DiffIcon,
   MarkDownIcon,
   CommitIcon,
   MenuDropdown,
+  ErrorIcon,
 } from 'Components/UI';
 
 import api from 'Services/api';
@@ -30,9 +32,10 @@ const Header = ({
   setIsDiffView,
   onCommitClick,
   isLoading,
+  error,
 }) => (
   <PageHeader title={path}>
-    {!isLoading && (
+    {!isLoading && !error && (
       <>
         <MediaQuery lessThan="sm">
           <MenuDropdown
@@ -94,6 +97,7 @@ const EditorPage = ({ history, location }) => {
   const [isDiffView, setIsDiffView] = useState(false);
   const [showCommitModal, setShowCommitModal] = useState(false);
   const [fileData, setFileData] = useState({});
+  const [error, setError] = useState(false);
   const { branch, path, repo, repoId, isNewFile } = location.state;
 
   useEffect(() => {
@@ -111,6 +115,10 @@ const EditorPage = ({ history, location }) => {
           setMasterContent(fileContent);
           setContent(fileContent);
           setFileData(restFileData);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setError('Unable to fetch file');
           setIsLoading(false);
         });
     } else {
@@ -153,6 +161,7 @@ const EditorPage = ({ history, location }) => {
         setIsDiffView={setIsDiffView}
         onCommitClick={onCommitClick}
         isLoading={isLoading}
+        error={error}
       />
       <CommitModal
         onClose={onCloseCommitModal}
@@ -166,34 +175,42 @@ const EditorPage = ({ history, location }) => {
         onCommit={onCommit}
         isNewFile={isNewFile}
       />
-      {isLoading ? (
-        <LoaderWrapper>
-          <ContentLoader width={20} height={100}>
-            <rect x="0" y="0" rx="0" ry="0" width="20" height="100" />
-          </ContentLoader>
-          <ContentLoader width={20} height={100}>
-            <rect x="0" y="0" rx="0" ry="0" width="20" height="100" />
-          </ContentLoader>
-        </LoaderWrapper>
+      {error ? (
+        <Empty message={error}>
+          <ErrorIcon height="150" width="150" />
+        </Empty>
       ) : (
-        <EditorWrapper>
-          {isDiffView ? (
-            <DiffView
-              value={content}
-              originalValue={masterContent}
-              onChange={onChangeDiffView}
-            />
+        <>
+          {isLoading ? (
+            <LoaderWrapper>
+              <ContentLoader width={20} height={100}>
+                <rect x="0" y="0" rx="0" ry="0" width="20" height="100" />
+              </ContentLoader>
+              <ContentLoader width={20} height={100}>
+                <rect x="0" y="0" rx="0" ry="0" width="20" height="100" />
+              </ContentLoader>
+            </LoaderWrapper>
           ) : (
-            <MDEditor
-              defaultValue={content}
-              onChange={onChangeEditorValue}
-              parserOptions={{
-                breaks: false,
-                highlight: code => hljs.highlightAuto(code).value,
-              }}
-            />
+            <EditorWrapper>
+              {isDiffView ? (
+                <DiffView
+                  value={content}
+                  originalValue={masterContent}
+                  onChange={onChangeDiffView}
+                />
+              ) : (
+                <MDEditor
+                  defaultValue={content}
+                  onChange={onChangeEditorValue}
+                  parserOptions={{
+                    breaks: false,
+                    highlight: code => hljs.highlightAuto(code).value,
+                  }}
+                />
+              )}
+            </EditorWrapper>
           )}
-        </EditorWrapper>
+        </>
       )}
     </>
   );
