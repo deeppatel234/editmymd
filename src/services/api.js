@@ -11,6 +11,12 @@ const reqFilter = async request => {
   return Promise.reject(
     new APIError(resJson.message, request.status, request.statusText),
   );
+  if (request.url.endsWith('/user') && request.status >= 200 && request.status < 300) {
+    return Promise.resolve(resJson);
+  }
+  return Promise.reject(
+    new APIError('hello', 500, 'World'),
+  );
 };
 
 const fetchAPI = (url, data) => {

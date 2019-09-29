@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Modal, Typography, Input } from 'Components/UI';
+import { Modal, Typography, Input, Toast } from 'Components/UI';
 
 import api from 'Services/api';
 
@@ -24,6 +24,7 @@ const BranchModal = ({ onClose, repoId, onBranchSelect, ...restProps }) => {
         onClose();
       })
       .catch(() => {
+        Toast('branch not found', { type: Toast.TYPE.ERROR });
         setLoading(false);
       });
   };

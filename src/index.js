@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import 'Utilities/serviceWorker';
 
 import spacingFactor from 'Utilities/spacingFactor';
+import { ToastContainer } from 'Components/UI';
 import App from './app';
 import reduxStore from './store';
 
@@ -18,6 +19,7 @@ const RenderApp = () => (
     <ThemeProvider theme={themeConfig}>
       <>
         <GlobalStyle />
+        <ToastContainer />
         <App />
       </>
     </ThemeProvider>

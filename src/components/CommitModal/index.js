@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import { Modal, Typography, TextArea, Avatar } from 'Components/UI';
+import { Modal, Typography, TextArea, Avatar, Toast } from 'Components/UI';
 
 import api from 'Services/api';
 
@@ -43,6 +43,10 @@ const CommitModal = ({
         onCommit(res);
         onClose();
         setMessage('');
+      })
+      .catch(() => {
+        setLoading(false);
+        Toast('error in committing a file', { type: Toast.TYPE.ERROR });
       });
   };
 
@@ -55,7 +59,7 @@ const CommitModal = ({
       header={<Typography weight="bold">Commit a File</Typography>}
       footerProps={{
         okText: 'Commit',
-        okProps: { loading, onClick: onClickCommit },
+        okProps: { disabled: !message, loading, onClick: onClickCommit },
       }}
       onClose={onClose}
       {...restProps}
