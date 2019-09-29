@@ -124,6 +124,16 @@ const EditorPage = ({ history, location }) => {
     } else {
       setIsLoading(false);
     }
+
+    const unloadFunction = event => {
+      event.returnValue = 'Changes that you made may not be saved.';
+    };
+
+    window.addEventListener('beforeunload', unloadFunction);
+
+    return () => {
+      window.removeEventListener('beforeunload', unloadFunction);
+    };
   }, []);
 
   const onChangeDiffView = diffViewValue => {
