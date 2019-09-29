@@ -66,6 +66,16 @@ const branchInfo = async ({ accessToken }, { branch, repoId }) => {
   });
 };
 
+const createBranch = async ({ accessToken }, { branch, repoId, ref }) => {
+  return api('post', accessToken, {
+    url: `${GITLAB_API}/projects/${repoId}/repository/branches`,
+    body: {
+      branch,
+      ref,
+    },
+  });
+};
+
 const branchTree = async ({ accessToken }, { branch, repoId }) => {
   const data = await api('get', accessToken, {
     url: `${GITLAB_API}/projects/${repoId}/repository/tree`,
@@ -115,6 +125,7 @@ module.exports = {
   branchInfo,
   branchTree,
   commitFileContent,
+  createBranch,
   fileContent,
   generateAccessToken,
   repositoriesList,

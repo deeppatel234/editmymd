@@ -68,6 +68,19 @@ const branchInfo = ({ accessToken, userId }, { repoId, branch }) => {
   });
 };
 
+const createBranch = async (
+  { accessToken, userId },
+  { branch, repoId, sha },
+) => {
+  return api('post', accessToken, {
+    url: `${GITHUB_API}/repos/${userId}/${repoId}/git/refs`,
+    body: {
+      sha,
+      ref: `refs/heads/${branch}`,
+    },
+  });
+};
+
 const branchTree = async ({ accessToken, userId }, { repoId, branch }) => {
   const branchData = await branchInfo(
     { accessToken, userId },
@@ -121,6 +134,7 @@ module.exports = {
   branchInfo,
   branchTree,
   commitFileContent,
+  createBranch,
   fileContent,
   generateAccessToken,
   repositoriesList,

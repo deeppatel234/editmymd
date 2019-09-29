@@ -41,16 +41,16 @@ const get = ({ url, params = {}, ...restData }) => {
   });
 };
 
-const post = ({ url, body = {}, ...restData }) => {
-  return fetchAPI(url, {
+const post = ({ url, params = {}, body = {}, ...restData }) => {
+  return fetchAPI(`${url}${encodeQueryString(params)}`, {
     method: 'POST',
     body: JSON.stringify(body),
     ...restData,
   });
 };
 
-const put = ({ url, body = {}, ...restData }) => {
-  return fetchAPI(url, {
+const put = ({ url, params = {}, body = {}, ...restData }) => {
+  return fetchAPI(`${url}${encodeQueryString(params)}`, {
     method: 'PUT',
     body: JSON.stringify(body),
     ...restData,

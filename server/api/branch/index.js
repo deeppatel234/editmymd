@@ -27,6 +27,31 @@ router.get(
   }),
 );
 
+router.post(
+  '/create',
+  celebrate({
+    body: {
+      repoId: Joi.string().required(),
+      branch: Joi.string().required(),
+      ref: Joi.string(),
+      sha: Joi.string(),
+    },
+  }),
+  asyncError(async (req, res) => {
+    const { type, ...userInfo } = req.user;
+    const { repoId, branch, ref, sha } = req.body;
+
+    res.json(
+      await getService(type, 'createBranch')(userInfo, {
+        repoId,
+        branch,
+        ref,
+        sha,
+      }),
+    );
+  }),
+);
+
 router.get(
   '/tree',
   celebrate({
