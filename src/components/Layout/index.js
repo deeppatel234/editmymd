@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import OfflineBar from 'Components/OfflineBar';
 import {
   Typography,
   Avatar,
@@ -21,6 +22,7 @@ import {
 
 const Layout = ({ user, children, unsetUserData, history }) => (
   <LayoutWrapper>
+    <OfflineBar />
     <HeaderWrapper>
       <Typography variant="h6" color="white">
         ReadMD

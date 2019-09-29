@@ -1,6 +1,6 @@
 const CACHE_NAME = 'readmd-catch-vPACKAGE_VERSION';
 const catchFileType = ['manifest', 'font', 'image', 'script', 'style'];
-const apiToCatch = ['api/user', 'api/repo']
+const apiToCatch = ['api/user', 'api/repo'];
 
 self.addEventListener('fetch', function(event) {
   const { url, referrer, destination } = event.request;
@@ -31,38 +31,40 @@ self.addEventListener('fetch', function(event) {
         });
       }),
     );
-
   } else {
-
     event.respondWith(
-      fetch(event.request).then(function(response) {
-        if (
-          !response ||
-          response.status !== 200 ||
-          response.type !== 'basic'
-        ) {
+      fetch(event.request)
+        .then(function(response) {
+          if (
+            !response ||
+            response.status !== 200 ||
+            response.type !== 'basic'
+          ) {
+            return response;
+          }
+
+          const apiURL = url.replace(referrer, '');
+          if (
+            (url.includes('/api') && !apiToCatch.includes(apiURL)) ||
+            url.includes('oauth')
+          ) {
+            return response;
+          }
+
+          const responseToCache = response.clone();
+
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, responseToCache);
+          });
+
           return response;
-        }
-
-        const apiURL = url.replace(referrer, '');
-        if (url.includes('/api') && !apiToCatch.includes(apiURL)) {
-          return response;
-        }
-
-        const responseToCache = response.clone();
-
-        caches.open(CACHE_NAME).then(function(cache) {
-          cache.put(event.request, responseToCache);
-        });
-
-        return response;
-      }).catch(function() {
-        return caches.match(event.request);
-      })
+        })
+        .catch(function() {
+          return caches.match(event.request);
+        }),
     );
   }
 });
-
 
 self.addEventListener('activate', function(event) {
   event.waitUntil(
@@ -72,8 +74,8 @@ self.addEventListener('activate', function(event) {
           if (CACHE_NAME !== cacheName) {
             return caches.delete(cacheName);
           }
-        })
+        }),
       );
-    })
+    }),
   );
 });
