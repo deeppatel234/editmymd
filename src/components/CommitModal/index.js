@@ -10,18 +10,16 @@ import { CommitMessage, CommitTable, CommitMessageWrapper } from './styled';
 const CommitModal = ({
   onClose,
   content,
-  user,
-  branch,
-  path,
-  repo,
-  sha,
-  repoId,
-  isNewFile,
   onCommit,
+  repository,
+  user,
+  sha,
+  isNewFile,
   ...restProps
 }) => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const { branch, path, repoId, name } = repository;
 
   const onClickCommit = () => {
     setLoading(true);
@@ -40,6 +38,7 @@ const CommitModal = ({
       })
       .then(res => {
         setLoading(false);
+        Toast('File committed successfully.');
         onCommit(res);
         onClose();
         setMessage('');
@@ -70,7 +69,7 @@ const CommitModal = ({
             <td>
               <Typography weight="bold">Repository</Typography>
             </td>
-            <td>{repo}</td>
+            <td>{name}</td>
           </tr>
           <tr>
             <td>

@@ -11,7 +11,7 @@ const Editor = React.lazy(() => import('Pages/Editor'));
 const AppRoutes = ({ history }) => (
   <Layout history={history}>
     <Route path="/editor" component={Editor} />
-    <Route exact path="/repo/:repository" component={RepoDetails} />
+    <Route exact path="/repo" component={RepoDetails} />
     <Route exact path="/" component={AppHome} />
     <PWAPrompt />
   </Layout>

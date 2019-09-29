@@ -4,7 +4,12 @@ import { Modal, Typography, Input } from 'Components/UI';
 
 import { CreateModalWrapper, FileNameInputWrapper } from './styled';
 
-const CreateFileModal = ({ onClose, repo, onFileCreate, ...restProps }) => {
+const CreateFileModal = ({
+  onClose,
+  repository,
+  onFileCreate,
+  ...restProps
+}) => {
   const [fileName, setFileName] = useState('');
 
   const onClickCreate = () => {
@@ -27,12 +32,12 @@ const CreateFileModal = ({ onClose, repo, onFileCreate, ...restProps }) => {
     >
       <CreateModalWrapper>
         <FileNameInputWrapper>
-          <Typography weight="bold">{repo} /</Typography>
+          <Typography weight="bold">{repository.name} /</Typography>
           <Input value={fileName} onChange={onChangeFileName} />
           <Typography weight="bold">.md</Typography>
         </FileNameInputWrapper>
         <Typography className="filename" weight="bold" color="primary">
-          {repo}/{fileName}.md
+          {repository.name}/{fileName}.md
         </Typography>
       </CreateModalWrapper>
     </Modal>

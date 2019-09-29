@@ -12,19 +12,14 @@ import {
 
 import { RepoCard, RepoLoadingCard, CardCounts, CardTitle } from './styled';
 
-const RepositoryCard = ({
-  isPrivate,
-  name,
-  forkCount,
-  starCount,
-  defaultBranch,
-  repoId,
-}) => {
+const RepositoryCard = props => {
+  const { isPrivate, name, forkCount, starCount } = props;
+
   return (
     <RepoCard
       to={{
-        pathname: `repo/${name}`,
-        state: { defaultBranch, repoId },
+        pathname: `repo`,
+        state: props,
       }}
     >
       <CardTitle>

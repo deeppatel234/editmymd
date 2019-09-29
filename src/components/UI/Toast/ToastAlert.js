@@ -6,9 +6,7 @@ import { Toast, Remove } from './styled';
 const ToastAlert = ({ content, options: { id, type }, onClickRemove }) => (
   <Toast type={type}>
     <span>{content}</span>
-    <Remove data-toast-id={id} onClick={onClickRemove}>
-      x
-    </Remove>
+    <Remove data-toast-id={id} onClick={onClickRemove} />
   </Toast>
 );
 

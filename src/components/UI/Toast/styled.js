@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { POSITION } from './constants';
+import { CloseIcon } from 'Components/UI';
 
 const positionCss = {
   [POSITION.TOP_CENTER]: {
@@ -7,7 +8,8 @@ const positionCss = {
     exit: 'translate3d(0, -100%, 0)',
     position: {
       top: '1em',
-      right: '50%',
+      left: '50%',
+      transform: 'translateX(-50%)',
     },
   },
   [POSITION.TOP_LEFT]: {
@@ -31,7 +33,8 @@ const positionCss = {
     exit: 'translate3d(0, 100%, 0)',
     position: {
       right: '50%',
-      bottom: '1em',
+      left: '50%',
+      transform: 'translateX(-50%)',
     },
   },
   [POSITION.BOTTOM_LEFT]: {
@@ -54,8 +57,9 @@ const positionCss = {
 
 export const Toast = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  width: 240px;
+  max-width: 350px;
   margin: 10px 0;
   padding: 15px 20px;
   color: ${props =>
@@ -67,8 +71,8 @@ export const Toast = styled.div`
   border-radius: 5px;
 `;
 
-export const Remove = styled.span`
-  padding: 0 5px;
+export const Remove = styled(CloseIcon)`
+  margin-left: 16px;
   cursor: pointer;
 `;
 

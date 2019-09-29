@@ -4,7 +4,7 @@ import { ACTION, TYPE, POSITION } from './constants';
 
 const DEFAULT_OPTIONS = {
   type: TYPE.PRIMARY,
-  position: POSITION.TOP_RIGHT,
+  position: POSITION.TOP_CENTER,
   duration: 4500,
   autoClose: true,
 };

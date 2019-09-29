@@ -13,6 +13,7 @@ import PageHeader from 'Components/PageHeader';
 import DiffView from 'Components/DiffView';
 import CommitModal from 'Components/CommitModal';
 import Empty from 'Components/Empty';
+import withLocationState from 'Components/withLocationState';
 import {
   Button,
   DiffIcon,
@@ -20,6 +21,10 @@ import {
   CommitIcon,
   MenuDropdown,
   ErrorIcon,
+  Typography,
+  RepositoryIcon,
+  BranchIcon,
+  FileIcon,
 } from 'Components/UI';
 
 import api from 'Services/api';
@@ -27,14 +32,28 @@ import api from 'Services/api';
 import { EditorWrapper, LoaderWrapper } from './styled';
 
 const Header = ({
-  path,
+  repository,
   isDiffView,
   setIsDiffView,
   onCommitClick,
   isLoading,
   error,
 }) => (
-  <PageHeader title={path}>
+  <PageHeader
+    titleComponent={
+      <>
+        <Typography variant="h6" center>
+          <FileIcon /> {repository.path}
+        </Typography>
+        <Typography center>
+          <RepositoryIcon /> {repository.name}
+        </Typography>
+        <Typography center>
+          <BranchIcon /> {repository.branch}
+        </Typography>
+      </>
+    }
+  >
     {!isLoading && !error && (
       <>
         <MediaQuery lessThan="sm">
@@ -90,7 +109,7 @@ const Header = ({
   </PageHeader>
 );
 
-const EditorPage = ({ history, location }) => {
+const EditorPage = ({ history, locationState, location }) => {
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [masterContent, setMasterContent] = useState('');
@@ -98,7 +117,8 @@ const EditorPage = ({ history, location }) => {
   const [showCommitModal, setShowCommitModal] = useState(false);
   const [fileData, setFileData] = useState({});
   const [error, setError] = useState(false);
-  const { branch, path, repo, repoId, isNewFile } = location.state;
+  const [isNewFile, setIsNewFile] = useState(locationState.isNewFile);
+  const { branch, path, repoId } = locationState;
 
   useEffect(() => {
     if (!isNewFile) {
@@ -160,13 +180,14 @@ const EditorPage = ({ history, location }) => {
         ...location,
         state: { ...location.state, isNewFile: false },
       });
+      setIsNewFile(false);
     }
   };
 
   return (
     <>
       <Header
-        path={path}
+        repository={locationState}
         isDiffView={isDiffView}
         setIsDiffView={setIsDiffView}
         onCommitClick={onCommitClick}
@@ -176,13 +197,10 @@ const EditorPage = ({ history, location }) => {
       <CommitModal
         onClose={onCloseCommitModal}
         visible={showCommitModal}
-        branch={branch}
-        path={path}
-        repoId={repoId}
-        repo={repo}
-        content={content}
-        sha={fileData.sha}
         onCommit={onCommit}
+        content={content}
+        repository={locationState}
+        sha={fileData.sha}
         isNewFile={isNewFile}
       />
       {error ? (
@@ -226,4 +244,4 @@ const EditorPage = ({ history, location }) => {
   );
 };
 
-export default EditorPage;
+export default withLocationState(EditorPage);

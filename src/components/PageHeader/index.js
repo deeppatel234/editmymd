@@ -1,12 +1,19 @@
 import React from 'react';
 
 import { Typography } from 'Components/UI';
-import { PageHeaderWrapper, HeaderButtons } from './styled';
+import { PageHeaderWrapper, HeaderButtons, PageTitle } from './styled';
 
-const PageHeader = ({ title, children }) => {
+const PageHeader = ({ title, titleComponent, children }) => {
   return (
     <PageHeaderWrapper>
-      <Typography variant="h5">{title}</Typography>
+      <PageTitle>
+        {title && (
+          <Typography center variant="h5">
+            {title}
+          </Typography>
+        )}
+        {titleComponent}
+      </PageTitle>
       {children}
     </PageHeaderWrapper>
   );

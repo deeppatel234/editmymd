@@ -8,6 +8,7 @@ import CreateFileModal from 'Components/CreateFileModal';
 import BranchModal from 'Components/BranchModal';
 import { CardLoader } from 'Components/ContentLoader';
 import MediaQuery from 'Components/MediaQuery';
+import withLocationState from 'Components/withLocationState';
 import {
   RepositoryIcon,
   Button,
@@ -23,11 +24,21 @@ import api from 'Services/api';
 
 import { RepoDetailsWrapper, PathList, PathListChild } from './styled';
 
-const Header = ({ repository, onClickSelectBranch, onCreateFileClick }) => (
+const Header = ({
+  branch,
+  repository,
+  onClickSelectBranch,
+  onCreateFileClick,
+}) => (
   <PageHeader
-    title={
+    titleComponent={
       <>
-        <RepositoryIcon /> {repository}
+        <Typography variant="h6" center>
+          <RepositoryIcon /> {repository.name}
+        </Typography>
+        <Typography center>
+          <BranchIcon /> {branch}
+        </Typography>
       </>
     }
   >
@@ -72,11 +83,37 @@ const Header = ({ repository, onClickSelectBranch, onCreateFileClick }) => (
   </PageHeader>
 );
 
-const RepoDetails = ({ match, history, location }) => {
-  const { repository } = match.params;
-  const { defaultBranch, repoId } = location.state;
+const RenderPaths = ({ isLoading, paths, editorState }) => (
+  <RepoDetailsWrapper>
+    <PathList>
+      {isLoading
+        ? _range(6).map(id => (
+            <PathListChild key={id}>
+              <CardLoader height={20} />
+            </PathListChild>
+          ))
+        : paths.map(({ path }) => (
+            <PathListChild key={path}>
+              <Link
+                to={{
+                  pathname: '/editor',
+                  state: editorState({ path, isNewFile: false }),
+                }}
+              >
+                <Typography>
+                  <FileIcon height="1.5em" width="1.5em" />
+                  {path}
+                </Typography>
+              </Link>
+            </PathListChild>
+          ))}
+    </PathList>
+  </RepoDetailsWrapper>
+);
+
+const RepoDetails = ({ history, locationState }) => {
   const [paths, setPaths] = useState([]);
-  const [branch, setBranch] = useState(defaultBranch);
+  const [branch, setBranch] = useState(locationState.defaultBranch);
   const [showCreateFileModal, setShowCreateFileModal] = useState(false);
   const [showBranchModal, setShowBranchModal] = useState(false);
   const [error, setError] = useState(false);
@@ -89,7 +126,7 @@ const RepoDetails = ({ match, history, location }) => {
         url: '/branch/tree',
         params: {
           branch,
-          repoId,
+          repoId: locationState.repoId,
         },
       })
       .then(path => {
@@ -100,6 +137,14 @@ const RepoDetails = ({ match, history, location }) => {
         setError('Unable to fetch markdown files');
         setIsLoading(false);
       });
+  };
+
+  const editorState = state => {
+    return {
+      branch,
+      ...locationState,
+      ...state,
+    };
   };
 
   useEffect(() => {
@@ -116,13 +161,13 @@ const RepoDetails = ({ match, history, location }) => {
 
   const onFileCreate = fileName => {
     onCloseCreateFileModal();
-    history.push('/editor', {
-      branch,
-      repoId,
-      repo: repository,
-      path: fileName,
-      isNewFile: true,
-    });
+    history.push(
+      '/editor',
+      editorState({
+        path: fileName,
+        isNewFile: true,
+      }),
+    );
   };
 
   const onClickSelectBranch = () => {
@@ -140,20 +185,21 @@ const RepoDetails = ({ match, history, location }) => {
   return (
     <>
       <Header
-        repository={repository}
+        branch={branch}
+        repository={locationState}
         onClickSelectBranch={onClickSelectBranch}
         onCreateFileClick={onCreateFileClick}
       />
       <CreateFileModal
         onClose={onCloseCreateFileModal}
         visible={showCreateFileModal}
-        repo={repository}
         onFileCreate={onFileCreate}
+        repository={locationState}
       />
       <BranchModal
         onClose={onCloseBranchModal}
         visible={showBranchModal}
-        repoId={repoId}
+        repoId={locationState.repoId}
         onBranchSelect={onBranchSelect}
       />
       {error ? (
@@ -167,41 +213,15 @@ const RepoDetails = ({ match, history, location }) => {
               <BookIcon height="50" width="50" color="subText" />
             </Empty>
           )}
-          <RepoDetailsWrapper>
-            <PathList>
-              {isLoading
-                ? _range(6).map(id => (
-                    <PathListChild key={id}>
-                      <CardLoader height={20} />
-                    </PathListChild>
-                  ))
-                : paths.map(({ path }) => (
-                    <PathListChild key={path}>
-                      <Link
-                        to={{
-                          pathname: '/editor',
-                          state: {
-                            branch,
-                            path,
-                            repoId,
-                            repo: repository,
-                            isNewFile: false,
-                          },
-                        }}
-                      >
-                        <Typography>
-                          <FileIcon height="1.5em" width="1.5em" />
-                          {path}
-                        </Typography>
-                      </Link>
-                    </PathListChild>
-                  ))}
-            </PathList>
-          </RepoDetailsWrapper>
+          <RenderPaths
+            isLoading={isLoading}
+            paths={paths}
+            editorState={editorState}
+          />
         </>
       )}
     </>
   );
 };
 
-export default RepoDetails;
+export default withLocationState(RepoDetails);

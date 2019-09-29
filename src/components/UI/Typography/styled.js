@@ -30,6 +30,12 @@ export const Element = styled.p`
     css`
       font-weight: ${props.weight};
     `}
+  ${props =>
+    props.center &&
+    css`
+      display: flex;
+      align-items: center;
+    `}
 `;
 
 export default Element;

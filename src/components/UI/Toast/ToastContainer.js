@@ -102,7 +102,7 @@ class ToastContainer extends React.Component {
 ToastContainer.POSITION = POSITION;
 
 ToastContainer.defaultProps = {
-  position: POSITION.TOP_RIGHT,
+  position: POSITION.TOP_CENTER,
 };
 
 ToastContainer.propTypes = {
