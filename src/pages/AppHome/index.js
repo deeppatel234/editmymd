@@ -68,6 +68,7 @@ const AppHome = () => {
             <RepositoryIcon /> Repository
           </>
         }
+        breadcrumbs={[{ label: 'Home' }]}
       />
       <AddRepositoryWrapper>
         <InputWrapper>

@@ -53,6 +53,11 @@ const Header = ({
         </Typography>
       </>
     }
+    breadcrumbs={[
+      { label: 'Home', url: '/' },
+      { label: repository.name, url: '/repo', state: repository },
+      { label: repository.path },
+    ]}
   >
     {!isLoading && !error && (
       <>

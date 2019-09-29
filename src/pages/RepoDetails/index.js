@@ -41,6 +41,7 @@ const Header = ({
         </Typography>
       </>
     }
+    breadcrumbs={[{ label: 'Home', url: '/' }, { label: repository.name }]}
   >
     <MediaQuery lessThan="sm">
       <MenuDropdown

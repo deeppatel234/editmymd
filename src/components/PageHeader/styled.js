@@ -2,9 +2,10 @@ import styled from 'styled-components';
 
 export const PageHeaderWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: ${props => props.theme.spacing(2, 4)};
+  padding: ${props => props.theme.spacing(1, 4, 2, 4)};
   background: ${props => props.theme.palette.white};
   border-bottom: 1px solid ${props => props.theme.palette.grey.grey300};
 `;
