@@ -1,5 +1,6 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
+const { APIError } = require('../../utils/errors');
 const { getService } = require('../../service');
 const { asyncError } = require('../../utils/errors');
 
@@ -17,6 +18,14 @@ router.get(
   asyncError(async (req, res) => {
     const { type, ...userInfo } = req.user;
     const { path, branch, repoId } = req.query;
+
+    if (!path.endsWith('.md')) {
+      throw new APIError(
+        'file should be a markdown (.md) file',
+        500,
+        'Invalid File',
+      );
+    }
 
     res.json(
       await getService(type, 'fileContent')(userInfo, {
@@ -44,6 +53,14 @@ router.put(
   asyncError(async (req, res) => {
     const { type, ...userInfo } = req.user;
     const { repoId, path, branch, message, content, sha, isNewFile } = req.body;
+
+    if (!path.endsWith('.md')) {
+      throw new APIError(
+        'file should be a markdown (.md) file',
+        500,
+        'Invalid File',
+      );
+    }
 
     res.json(
       await getService(type, 'commitFileContent')(userInfo, {
