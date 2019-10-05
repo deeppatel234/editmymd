@@ -142,9 +142,9 @@ const RepoDetails = ({ history, locationState }) => {
 
   const editorState = state => {
     return {
-      branch,
       ...locationState,
       ...state,
+      branch,
     };
   };
 
