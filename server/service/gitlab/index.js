@@ -66,12 +66,15 @@ const branchInfo = async ({ accessToken }, { branch, repoId }) => {
   });
 };
 
-const createBranch = async ({ accessToken }, { branch, repoId, ref }) => {
+const createBranch = async (
+  { accessToken },
+  { branch, repoId, fromBranch },
+) => {
   return api('post', accessToken, {
     url: `${GITLAB_API}/projects/${repoId}/repository/branches`,
     body: {
       branch,
-      ref,
+      ref: fromBranch,
     },
   });
 };

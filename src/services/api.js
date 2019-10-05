@@ -11,12 +11,6 @@ const reqFilter = async request => {
   return Promise.reject(
     new APIError(resJson.message, request.status, request.statusText),
   );
-  if (request.url.endsWith('/user') && request.status >= 200 && request.status < 300) {
-    return Promise.resolve(resJson);
-  }
-  return Promise.reject(
-    new APIError('hello', 500, 'World'),
-  );
 };
 
 const fetchAPI = (url, data) => {
@@ -59,9 +53,21 @@ const get = ({ url, params = {} }) => {
   });
 };
 
-const put = ({ url, data = {} }) => {
-  return fetchAPI(`/api${url}`, {
+const put = ({ url, data = {}, params = {} }) => {
+  return fetchAPI(`/api${url}${encodeQueryString(params)}`, {
     method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: token.get(),
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+const post = ({ url, data = {}, params = {} }) => {
+  return fetchAPI(`/api${url}${encodeQueryString(params)}`, {
+    method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -74,4 +80,5 @@ const put = ({ url, data = {} }) => {
 export default {
   get,
   put,
+  post,
 };

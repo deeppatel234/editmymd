@@ -8,3 +8,4 @@ export * from './Loader';
 export * from './BaseDropDown';
 export * from './MenuDropdown';
 export * from './Toast';
+export * from './FormGroup';

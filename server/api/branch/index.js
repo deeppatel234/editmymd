@@ -33,20 +33,18 @@ router.post(
     body: {
       repoId: Joi.string().required(),
       branch: Joi.string().required(),
-      ref: Joi.string(),
-      sha: Joi.string(),
+      fromBranch: Joi.string().required(),
     },
   }),
   asyncError(async (req, res) => {
     const { type, ...userInfo } = req.user;
-    const { repoId, branch, ref, sha } = req.body;
+    const { repoId, branch, fromBranch } = req.body;
 
     res.json(
       await getService(type, 'createBranch')(userInfo, {
         repoId,
         branch,
-        ref,
-        sha,
+        fromBranch,
       }),
     );
   }),

@@ -70,8 +70,11 @@ const branchInfo = ({ accessToken, userId }, { repoId, branch }) => {
 
 const createBranch = async (
   { accessToken, userId },
-  { branch, repoId, sha },
+  { branch, repoId, fromBranch },
 ) => {
+  const {
+    commit: { sha },
+  } = await branchInfo({ accessToken, userId }, { repoId, branch: fromBranch });
   return api('post', accessToken, {
     url: `${GITHUB_API}/repos/${userId}/${repoId}/git/refs`,
     body: {
