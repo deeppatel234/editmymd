@@ -25,6 +25,7 @@ import {
   RepositoryIcon,
   BranchIcon,
   FileIcon,
+  Toast,
 } from 'Components/UI';
 
 import api from 'Services/api';
@@ -176,7 +177,11 @@ const EditorPage = ({ history, locationState, location }) => {
   };
 
   const onCommitClick = () => {
-    setShowCommitModal(true);
+    if (content === masterContent) {
+      Toast('Please do some changes for commit', { type: Toast.TYPE.ERROR });
+    } else {
+      setShowCommitModal(true);
+    }
   };
 
   const onCloseCommitModal = () => {
