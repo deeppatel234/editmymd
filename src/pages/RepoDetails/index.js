@@ -114,7 +114,7 @@ const RenderPaths = ({ isLoading, paths, editorState }) => (
 
 const RepoDetails = ({ history, locationState }) => {
   const [paths, setPaths] = useState([]);
-  const [branch, setBranch] = useState(locationState.defaultBranch);
+  const [branch, setBranch] = useState(locationState.branch);
   const [showCreateFileModal, setShowCreateFileModal] = useState(false);
   const [showBranchModal, setShowBranchModal] = useState(false);
   const [error, setError] = useState(false);

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import { Modal, Typography, TextArea, Avatar, Toast } from 'Components/UI';
+import {
+  Modal,
+  Typography,
+  TextArea,
+  Avatar,
+  Toast,
+  Button,
+} from 'Components/UI';
+import CreateBranchModal from 'Components/CreateBranchModal';
 
 import api from 'Services/api';
 
@@ -15,11 +23,14 @@ const CommitModal = ({
   user,
   sha,
   isNewFile,
+  onChangeBranch,
   ...restProps
 }) => {
+  const { path, repoId, name } = repository;
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const { branch, path, repoId, name } = repository;
+  const [showCreateBranchModal, setShowCreateBranchModal] = useState(false);
+  const [branch, setBranch] = useState(repository.branch);
 
   const onClickCommit = () => {
     setLoading(true);
@@ -49,8 +60,9 @@ const CommitModal = ({
       });
   };
 
-  const onChangeMessage = event => {
-    setMessage(event.target.value);
+  const onCreateBranch = branchName => {
+    setBranch(branchName);
+    onChangeBranch(branchName);
   };
 
   return (
@@ -75,7 +87,16 @@ const CommitModal = ({
             <td>
               <Typography weight="bold">Branch</Typography>
             </td>
-            <td>{branch}</td>
+            <td>
+              {branch}
+              <Button
+                textOnly
+                color="primary"
+                onClick={() => setShowCreateBranchModal(true)}
+              >
+                Create a new branch
+              </Button>
+            </td>
           </tr>
           <tr>
             <td>
@@ -89,9 +110,20 @@ const CommitModal = ({
         <Typography weight="bold">Commit Message</Typography>
         <CommitMessage>
           <Avatar alt="profile-picture" size={35} image={user.profilePicture} />
-          <TextArea rows="5" value={message} onChange={onChangeMessage} />
+          <TextArea
+            rows="5"
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+          />
         </CommitMessage>
       </CommitMessageWrapper>
+      <CreateBranchModal
+        onClose={() => setShowCreateBranchModal(false)}
+        visible={showCreateBranchModal}
+        onCreateBranch={onCreateBranch}
+        repoId={repoId}
+        fromBranchValue={branch}
+      />
     </Modal>
   );
 };

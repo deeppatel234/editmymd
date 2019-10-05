@@ -33,6 +33,7 @@ import { EditorWrapper, LoaderWrapper } from './styled';
 
 const Header = ({
   repository,
+  branch,
   isDiffView,
   setIsDiffView,
   onCommitClick,
@@ -49,13 +50,17 @@ const Header = ({
           <RepositoryIcon /> {repository.name}
         </Typography>
         <Typography center>
-          <BranchIcon /> {repository.branch}
+          <BranchIcon /> {branch}
         </Typography>
       </>
     }
     breadcrumbs={[
       { label: 'Home', url: '/' },
-      { label: repository.name, url: '/repo', state: repository },
+      {
+        label: repository.name,
+        url: '/repo',
+        state: { ...repository, branch },
+      },
       { label: repository.path },
     ]}
   >
@@ -115,6 +120,7 @@ const Header = ({
 );
 
 const EditorPage = ({ history, locationState, location }) => {
+  const { path, repoId } = locationState;
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [masterContent, setMasterContent] = useState('');
@@ -123,7 +129,7 @@ const EditorPage = ({ history, locationState, location }) => {
   const [fileData, setFileData] = useState({});
   const [error, setError] = useState(false);
   const [isNewFile, setIsNewFile] = useState(locationState.isNewFile);
-  const { branch, path, repoId } = locationState;
+  const [branch, setBranch] = useState(locationState.branch);
 
   useEffect(() => {
     if (!isNewFile) {
@@ -189,6 +195,14 @@ const EditorPage = ({ history, locationState, location }) => {
     }
   };
 
+  const onChangeBranch = branchName => {
+    setBranch(branchName);
+    history.replace({
+      ...location,
+      state: { ...location.state, branch: branchName },
+    });
+  };
+
   return (
     <>
       <Header
@@ -198,6 +212,7 @@ const EditorPage = ({ history, locationState, location }) => {
         onCommitClick={onCommitClick}
         isLoading={isLoading}
         error={error}
+        branch={branch}
       />
       <CommitModal
         onClose={onCloseCommitModal}
@@ -207,6 +222,7 @@ const EditorPage = ({ history, locationState, location }) => {
         repository={locationState}
         sha={fileData.sha}
         isNewFile={isNewFile}
+        onChangeBranch={onChangeBranch}
       />
       {error ? (
         <Empty message={error}>

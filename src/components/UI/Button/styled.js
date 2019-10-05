@@ -62,7 +62,18 @@ export const ButtonElement = styled.button`
           : props.theme.palette.grey.grey100};
       }
     `}
-
+  ${props =>
+    props.textOnly &&
+    css`
+      color: ${props.theme.palette[props.color || 'text']};
+      background: transparent;
+      border: none;
+      &:hover {
+        background: ${props.color
+          ? transparentize(0.9, props.theme.palette[props.color])
+          : props.theme.palette.grey.grey100};
+      }
+    `}
   ${props =>
     props.disabled &&
     css`

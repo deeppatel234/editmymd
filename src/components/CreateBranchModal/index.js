@@ -7,11 +7,12 @@ import api from 'Services/api';
 const CreateBranchModal = ({
   onClose,
   repoId,
-  onBranchSelect,
+  onCreateBranch,
+  fromBranchValue,
   ...restProps
 }) => {
   const [branch, setBranch] = useState('');
-  const [fromBranch, setFromBranch] = useState('');
+  const [fromBranch, setFromBranch] = useState(fromBranchValue || '');
   const [loading, setLoading] = useState(false);
 
   const onClickOkay = () => {
@@ -27,11 +28,11 @@ const CreateBranchModal = ({
       })
       .then(() => {
         setLoading(false);
-        onBranchSelect(branch);
+        onCreateBranch(branch);
         onClose();
       })
-      .catch(() => {
-        Toast('branch not found', { type: Toast.TYPE.ERROR });
+      .catch(err => {
+        Toast(err.message, { type: Toast.TYPE.ERROR });
         setLoading(false);
       });
   };
@@ -40,13 +41,17 @@ const CreateBranchModal = ({
     <Modal
       header={<Typography weight="bold">Create a branch</Typography>}
       footerProps={{
-        okProps: { disabled: !branch, loading, onClick: onClickOkay },
+        okProps: {
+          disabled: !branch || !fromBranch,
+          loading,
+          onClick: onClickOkay,
+        },
       }}
       onClose={onClose}
       {...restProps}
     >
       <>
-        <FormGroup label="From branch" required>
+        <FormGroup label="From branch" required disabled={!!fromBranchValue}>
           {props => (
             <Input
               aria-label="from-branch-name"

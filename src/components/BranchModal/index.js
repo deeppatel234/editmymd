@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 
-import { Modal, Typography, Input, Toast } from 'Components/UI';
-
+import { Modal, Typography, Input, Toast, Button } from 'Components/UI';
+import CreateBranchModal from 'Components/CreateBranchModal';
 import api from 'Services/api';
+
+import { RightButton } from './styled';
 
 const BranchModal = ({ onClose, repoId, onBranchSelect, ...restProps }) => {
   const [branch, setBranch] = useState('');
+  const [showCreateBranchModal, setShowCreateBranchModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onClickOkay = () => {
@@ -29,8 +32,9 @@ const BranchModal = ({ onClose, repoId, onBranchSelect, ...restProps }) => {
       });
   };
 
-  const onChangeMessage = event => {
-    setBranch(event.target.value);
+  const onCreateBranch = branchName => {
+    onBranchSelect(branchName);
+    onClose();
   };
 
   return (
@@ -45,7 +49,22 @@ const BranchModal = ({ onClose, repoId, onBranchSelect, ...restProps }) => {
       <Input
         aria-label="branch-name"
         value={branch}
-        onChange={onChangeMessage}
+        onChange={e => setBranch(e.target.value)}
+      />
+      <RightButton>
+        <Button
+          textOnly
+          color="primary"
+          onClick={() => setShowCreateBranchModal(true)}
+        >
+          Create a new branch
+        </Button>
+      </RightButton>
+      <CreateBranchModal
+        onClose={() => setShowCreateBranchModal(false)}
+        visible={showCreateBranchModal}
+        onCreateBranch={onCreateBranch}
+        repoId={repoId}
       />
     </Modal>
   );

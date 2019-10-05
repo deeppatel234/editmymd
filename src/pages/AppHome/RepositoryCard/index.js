@@ -12,14 +12,14 @@ import {
 
 import { RepoCard, RepoLoadingCard, CardCounts, CardTitle } from './styled';
 
-const RepositoryCard = props => {
+const RepositoryCard = ({ defaultBranch, ...props }) => {
   const { isPrivate, name, forkCount, starCount } = props;
 
   return (
     <RepoCard
       to={{
         pathname: `repo`,
-        state: props,
+        state: { ...props, branch: defaultBranch },
       }}
     >
       <CardTitle>
