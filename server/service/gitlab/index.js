@@ -46,6 +46,10 @@ const user = async accessToken => {
 const repositoriesList = async ({ accessToken, userId }) => {
   const data = await api('get', accessToken, {
     url: `${GITLAB_API}/users/${userId}/projects`,
+    params: {
+      order_by: 'updated_at',
+      owned: true,
+    },
   });
   return data.map(formateData.repository).filter(d => d.defaultBranch !== null);
 };
@@ -55,6 +59,8 @@ const searchRepositories = async ({ accessToken, userId }, { query }) => {
     url: `${GITLAB_API}/users/${userId}/projects`,
     params: {
       search: query,
+      order_by: 'updated_at',
+      owned: true,
     },
   });
   return data.map(formateData.repository).filter(d => d.defaultBranch !== null);

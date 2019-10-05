@@ -53,10 +53,10 @@ const HomePage = () => (
       <BodyContent>
         <Typography variant="h3">Manage your project documentation</Typography>
         <Typography variant="h6" color="subText">
-          With ReadMD you can manage your all READMD files
+          With ReadMD you can manage your all markdown files
         </Typography>
-        <GithubButton string="Sign up With GitHub" />
-        <GitLabButton string="Sign up With GitLab" />
+        <GithubButton string="Login With GitHub" />
+        <GitLabButton string="Login With GitLab" />
       </BodyContent>
       <BodyContent>
         <HomePageImage alt="homepage-image" src="/assets/homepage-vector.svg" />

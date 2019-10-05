@@ -44,6 +44,10 @@ const user = async accessToken => {
 const repositoriesList = async ({ accessToken }) => {
   const data = await api('get', accessToken, {
     url: `${GITHUB_API}/user/repos`,
+    params: {
+      sort: 'updated',
+      affiliation: 'owner',
+    },
   });
   return data.map(formateData.repository);
 };
