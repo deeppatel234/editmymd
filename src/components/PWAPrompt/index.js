@@ -35,7 +35,7 @@ const PWAPrompt = () => {
   return (
     <PWAPromptWrapper>
       <Typography variant="body2" weight="bold" onClick={onAddClick}>
-        Add ReadMD to Home Screen
+        Add EditMyMd to Home Screen
       </Typography>
       <span tabIndex="0" role="button" onClick={onCloseClick}>
         <CloseIcon height="2em" weight="2em" />

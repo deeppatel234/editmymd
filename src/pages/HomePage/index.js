@@ -46,14 +46,14 @@ const HomePage = () => (
   <HomePageWrapper>
     <Header>
       <Typography variant="h5" color="white">
-        ReadMD
+        editmymd
       </Typography>
     </Header>
     <Body>
       <BodyContent>
         <Typography variant="h3">Manage your project documentation</Typography>
         <Typography variant="h6" color="subText">
-          With ReadMD you can manage your all markdown files
+          With editmymd you can manage your all markdown files
         </Typography>
         <GithubButton string="Login With GitHub" />
         <GitLabButton string="Login With GitLab" />

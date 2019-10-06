@@ -1,5 +1,5 @@
 {
-  "name": "readmd",
+  "name": "editmymd",
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deeppatel234/readmd.git"
+    "url": "git+https://github.com/deeppatel234/editmymd.git"
   },
   "author": "Deep Patel",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/deeppatel234/readmd/issues"
+    "url": "https://github.com/deeppatel234/editmymd/issues"
   },
-  "homepage": "https://github.com/deeppatel234/readmd#readme",
+  "homepage": "https://github.com/deeppatel234/editmymd#readme",
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'readmd-catch-vPACKAGE_VERSION';
+const CACHE_NAME = 'editmymd-catch-vPACKAGE_VERSION';
 const catchFileType = ['manifest', 'font', 'image', 'script', 'style'];
 const apiToCatch = ['api/user', 'api/repo'];
 

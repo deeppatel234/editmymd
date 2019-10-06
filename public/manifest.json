@@ -1,10 +1,10 @@
 {
   "dir": "ltr",
   "lang": "en",
-  "name": "ReadMD",
+  "name": "EditMyMd",
   "display": "standalone",
   "start_url": "/",
-  "short_name": "ReadMD",
+  "short_name": "EditMyMd",
   "theme_color": "#24292E",
   "description": "Edit Your Markdown files",
   "orientation": "any",

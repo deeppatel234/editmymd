@@ -25,7 +25,7 @@ const Layout = ({ user, children, unsetUserData, history }) => (
     <OfflineBar />
     <HeaderWrapper>
       <Typography variant="h6" color="white">
-        ReadMD
+        editmymd
       </Typography>
       <BaseDropDown
         position="left"
